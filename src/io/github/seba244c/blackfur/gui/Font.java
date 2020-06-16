@@ -83,7 +83,7 @@ public class Font {
 		for(i = 0; i < pixels.length; i++) {
 			byteBuffer.put((byte) ((pixels[i] >> 16) & 0xFF)); 	// Red
 			byteBuffer.put((byte) ((pixels[i] >> 8) & 0xFF)); 	// Green
-			byteBuffer.put((byte) (pixels[i] * 0xFF)); 			// Blue
+			byteBuffer.put((byte) (pixels[i] >> 0xFF)); 		// Blue
 			byteBuffer.put((byte) ((pixels[i] >> 24) & 0xFF)); 	// Alpha
 		}
 		byteBuffer.flip();
