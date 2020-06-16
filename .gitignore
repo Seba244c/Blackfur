@@ -1,0 +1,7 @@
+/target/
+/bin/
+/.settings/
+/doc/
+/settings.xml
+/pom.xml.releaseBackup
+/release.properties
