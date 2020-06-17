@@ -12,6 +12,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import java.io.IOException;
 
 import io.github.seba244c.blackfur.editor.Editor;
+import io.github.seba244c.blackfur.game.Test;
 import io.github.seba244c.blackfur.gui.GUI;
 import io.github.seba244c.blackfur.math.Color;
 
@@ -24,6 +25,10 @@ public class Core {
 			window = Application.Init();
 			clearColor = Color.black();
 			
+			// Test component
+			Entity entity = new Entity("Jens");
+			entity.addComponent(new Test());
+			
 			// Init gui
 			GUI.init();
 			Editor.init();
@@ -31,10 +36,6 @@ public class Core {
 			// Setup alpha
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			
-			for(int z = 0; z < 50; z++) {
-				Debug.Log(z);
-			}
 			
 			while(!glfwWindowShouldClose(window)) {
 				// Update Application

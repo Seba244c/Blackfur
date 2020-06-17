@@ -13,6 +13,7 @@ public class Entity {
 	
 	private Entity parent;
 	private List<Entity> children = new ArrayList<Entity>();
+	private List<Component> components = new ArrayList<Component>();
 	private int inline = 0;
 	private String id;
 	
@@ -52,6 +53,24 @@ public class Entity {
 		parent = e;
 		parent.children.add(this);
 		setInline(parent.getInline() + 1);
+	}
+	
+	public Component getComponent(String name) {
+		for(i = 0; i < components.size(); i++) {
+			Component c = components.get(i);
+			if(c.getName().equals(name)) return c;
+		}
+		return null;
+	}
+	
+	public void removeComponent(Component c) {
+		components.remove(c);
+	}
+	
+	public void addComponent(Component c) {
+		if(getComponent(c.getName()) == null)
+			c.init(this);
+			components.add(c);
 	}
 	
 	public void removeChild(Entity e) {

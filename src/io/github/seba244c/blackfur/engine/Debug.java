@@ -11,6 +11,9 @@ public class Debug {
 	private static List<String> log = new ArrayList<String>();
 	private static int i = 0;
 	
+	public static void Log(int i) { Log(String.valueOf(i)); }
+	public static void Log(boolean b) { Log(String.valueOf(b)); }
+	public static void Log(float f) { Log(String.valueOf(f)); }
 	public static void Log(String message) {
 		AddMessage(message);
 	}
@@ -38,10 +41,6 @@ public class Debug {
 			return "";
 		}
 		return log.get(log.size()-1);
-	}
-
-	public static void Log(int i) {
-		Log(String.valueOf(i));
 	}
 	
 	public static void draw() {
