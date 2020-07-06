@@ -21,7 +21,8 @@ public class ComponentAttributes {
 			String[] splitName = f[i].getType().toString().split("\\.");
 			fields[i] = f[i].getName() + " " + splitName[splitName.length-1];
 			
-			height += 18;
+			if(i < fields.length - 1) height += 24;
+			else height += 22;
 		}
 	}
 	

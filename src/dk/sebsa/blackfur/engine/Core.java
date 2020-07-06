@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import dk.sebsa.blackfur.editor.Editor;
 import dk.sebsa.blackfur.game.Test;
+import dk.sebsa.blackfur.game.Tets;
 import dk.sebsa.blackfur.gui.GUI;
 import dk.sebsa.blackfur.math.Color;
 
@@ -28,7 +29,7 @@ public class Core {
 			// Test component
 			Entity entity = new Entity("Jens");
 			entity.addComponent(new Test());
-			//entity.addComponent(new Tets());
+			entity.addComponent(new Tets());
 			
 			// Init gui
 			GUI.init();
