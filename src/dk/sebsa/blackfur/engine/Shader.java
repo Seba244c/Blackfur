@@ -30,7 +30,7 @@ public class Shader {
 		if (vs == 0)
             throw new IllegalStateException("Error creating shader. Type: Vertex Shader");
         
-		GL20.glShaderSource(vs, CreateShader(fileName + ".vs"));
+		GL20.glShaderSource(vs, createShader(fileName + ".vs"));
 		GL20.glCompileShader(vs);
 		
 		if(GL20.glGetShaderi(vs, GL20.GL_COMPILE_STATUS) != 1) 
@@ -41,7 +41,7 @@ public class Shader {
 		if (vs == 0)
             throw new IllegalStateException("Error creating shader. Type: Vertex Shader");
         
-		GL20.glShaderSource(fs, CreateShader(fileName + ".fs"));
+		GL20.glShaderSource(fs, createShader(fileName + ".fs"));
 		GL20.glCompileShader(fs);
 		
 		if(GL20.glGetShaderi(fs, GL20.GL_COMPILE_STATUS) != 1) 
@@ -69,7 +69,7 @@ public class Shader {
 	}
 	
 	@SuppressWarnings("resource")
-	private String CreateShader(String fileName) {
+	private String createShader(String fileName) {
 		StringBuilder stringBuilder = new StringBuilder();
 		BufferedReader bufferedReader;
 		try {

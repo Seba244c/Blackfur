@@ -15,15 +15,23 @@ public abstract class Component {
 			this.owner = owner;
 	}
 	
-	public void awake() {}
-	public void update() {}
-	public void onWillRender() {}
-	public void onGUI() {}
+	public void awake() {
+		// When the component is intiliazed
+	}
+	public void update() {
+		// Ocurs on every frame
+	}
+	public void onWillRender() {
+		// When ready to render
+	}
+	public void onGUI() {
+		// Whilst gui is renderd
+	}
 	
-	public void print(String s) { Debug.Log(s); }
-	public void print(int i) { Debug.Log(i); }
-	public void print(boolean b) { Debug.Log(b); }
-	public void print(float f) { Debug.Log(f); }
+	public void print(String s) { Debug.log(s); }
+	public void print(int i) { Debug.log(i); }
+	public void print(boolean b) { Debug.log(b); }
+	public void print(float f) { Debug.log(f); }
 	
 	public final Entity getOwner() {
 		return owner;

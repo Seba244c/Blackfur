@@ -32,7 +32,7 @@ public class Editor {
 	
 	public static void render() {
 		// Render gui
-		GUI.Prepare();
+		GUI.prepare();
 		
 		Debug.draw();
 		GUI.window(new Rect(0, 0, 200, Application.getHeight() - 30), "Hierarchy", hierarchy::render, windowStyle);

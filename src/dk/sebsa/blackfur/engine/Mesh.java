@@ -21,13 +21,13 @@ public class Mesh {
 		
 		v_id = GL30.glGenBuffers();
 		GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, v_id);
-		GL30.glBufferData(GL30.GL_ARRAY_BUFFER, CreateBuffer(verticies), GL30.GL_STATIC_DRAW);
+		GL30.glBufferData(GL30.GL_ARRAY_BUFFER, createBuffer(verticies), GL30.GL_STATIC_DRAW);
 		GL20.glVertexAttribPointer(0, verticies.length/3, GL30.GL_FLOAT, false, 0, 0);
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		
 		u_id = GL30.glGenBuffers();
 		GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, u_id);
-		GL30.glBufferData(GL30.GL_ARRAY_BUFFER, CreateBuffer(uvs), GL30.GL_STATIC_DRAW);
+		GL30.glBufferData(GL30.GL_ARRAY_BUFFER, createBuffer(uvs), GL30.GL_STATIC_DRAW);
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		
 		meshs.add(this);
@@ -56,7 +56,7 @@ public class Mesh {
 		GL30.glBindVertexArray(0);
 	}
 	
-	public FloatBuffer CreateBuffer(float[] data) {
+	public FloatBuffer createBuffer(float[] data) {
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();

@@ -22,7 +22,7 @@ public class Application {
 	public static Input input;
 	private static GLFWWindowSizeCallback sizeCallback;
 	
-	public static long Init() {
+	public static long init() {
 		GLFWErrorCallback.createPrint(System.err).set();
 		
 		//If glfw cannot be initialized
@@ -76,7 +76,7 @@ public class Application {
 		width = w;
         height = h;
         r.set(0, 0, w, h);
-        GL11.glViewport(0, 0, w, h);
+        glViewport(0, 0, w, h);
         resized = true;
 	}
 
@@ -96,8 +96,8 @@ public class Application {
 		glfwPollEvents();
 		
 		// Clear screen
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
 		
 		input.update();
 		resized = false;

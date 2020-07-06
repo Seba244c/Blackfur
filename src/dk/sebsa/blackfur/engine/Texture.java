@@ -16,7 +16,8 @@ public class Texture {
 	private String name = "";
 	
 	private int id;
-	private int width, height;
+	private int width;
+	private int height;
 	
 	private static List<Texture> textureInstances = new ArrayList<Texture>();
 	private static Texture tmp = null;

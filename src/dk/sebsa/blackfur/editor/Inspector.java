@@ -16,7 +16,6 @@ import dk.sebsa.blackfur.gui.GUIStyle;
 public class Inspector {
 	private List<ComponentAttributes> ca = new ArrayList<ComponentAttributes>();
 	private int i = 0;
-	private int offsetY = 0;
 	public GUIStyle windowStyle;
 	
 	public Inspector() {
@@ -27,7 +26,7 @@ public class Inspector {
 		Entity selected = Editor.getSelected();
 		if(selected == null) return;
 		
-		offsetY = 0;
+		int offsetY = 0;
 		for(i = 0; i < ca.size(); i++) {
 			ComponentAttributes att = ca.get(i);
 			
@@ -84,7 +83,7 @@ public class Inspector {
 					if(!p.equals(v)) {
 						try { s.set(a.component, Float.parseFloat(v)); }
 						catch (NumberFormatException e) {
-							Debug.Log("Float field input is inviliad! ue#0001");
+							Debug.log("Float field input is inviliad! ue#0001");
 						}
 					}	
 				} catch (Exception e) {
@@ -99,7 +98,7 @@ public class Inspector {
 					if(!p.equals(v)) {
 						try { s.set(a.component, Integer.parseInt(v)); }
 						catch (NumberFormatException e) {
-							Debug.Log("Int field input is inviliad! ue#0001");
+							Debug.log("Int field input is inviliad! ue#0001");
 						}
 					}	
 				} catch (Exception e) {

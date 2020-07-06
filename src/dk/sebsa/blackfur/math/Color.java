@@ -7,15 +7,15 @@ public class Color {
 	public float a = 1;
 	
 	public Color(float r, float g, float b, float a) {
-		this.r = Mathf.Clamp(r, 0, 1);
-		this.g = Mathf.Clamp(g, 0, 1);
-		this.b = Mathf.Clamp(b, 0, 1);
-		this.a = Mathf.Clamp(a, 0, 1);
+		this.r = Mathf.clamp(r, 0, 1);
+		this.g = Mathf.clamp(g, 0, 1);
+		this.b = Mathf.clamp(b, 0, 1);
+		this.a = Mathf.clamp(a, 0, 1);
 	}
 	public Color(float r, float g, float b) {
-		this.r = Mathf.Clamp(r, 0, 1);
-		this.g = Mathf.Clamp(g, 0, 1);
-		this.b = Mathf.Clamp(b, 0, 1);
+		this.r = Mathf.clamp(r, 0, 1);
+		this.g = Mathf.clamp(g, 0, 1);
+		this.b = Mathf.clamp(b, 0, 1);
 	}
 	
 	public static Color black() {return new Color(0, 0, 0);}

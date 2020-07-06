@@ -11,14 +11,14 @@ public class Debug {
 	private static List<String> log = new ArrayList<String>();
 	private static int i = 0;
 	
-	public static void Log(int i) { Log(String.valueOf(i)); }
-	public static void Log(boolean b) { Log(String.valueOf(b)); }
-	public static void Log(float f) { Log(String.valueOf(f)); }
-	public static void Log(String message) {
-		AddMessage(message);
+	public static void log(int i) { log(String.valueOf(i)); }
+	public static void log(boolean b) { log(String.valueOf(b)); }
+	public static void log(float f) { log(String.valueOf(f)); }
+	public static void log(String message) {
+		addMessage(message);
 	}
 	
-	private static void AddMessage(String message) {
+	private static void addMessage(String message) {
 		log.add(message);
 		if(log.size() > 20) {
 			log.remove(0);
@@ -36,7 +36,7 @@ public class Debug {
 		return ret;
 	}
 	
-	public static String LastEntry() {
+	public static String lastEntry() {
 		if(log.size()==0) {
 			return "";
 		}
@@ -44,7 +44,7 @@ public class Debug {
 	}
 	
 	public static void draw() {
-		if(GUI.buttonPressed(Debug.LastEntry(), new Rect(0, Application.getHeight()-30, Application.getWidth(), 30), "Button", "ButtonHover") ) {
+		if(GUI.buttonPressed(Debug.lastEntry(), new Rect(0, Application.getHeight()-30, Application.getWidth(), 30), "Button", "ButtonHover") ) {
 			tinyfd_messageBox("Debug Log", Debug.getLog(), "cancel", "", true);
 		}
 	}

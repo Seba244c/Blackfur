@@ -69,10 +69,10 @@ public class Font {
 		graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		
 		drawCharaters(graphics2d);
-		return CreateBuffer();
+		return createBuffer();
 	}
 
-	private ByteBuffer CreateBuffer() {
+	private ByteBuffer createBuffer() {
 		int w = (int)imageSize.x;
 		int h = (int)imageSize.y;
 		int[] pixels = new int[w*h];

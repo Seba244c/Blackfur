@@ -48,7 +48,7 @@ public class GUI {
 		font = new Font(new java.awt.Font("TimesRoman", java.awt.Font.PLAIN, 16));
 	}
 	
-	public static void Prepare() {
+	public static void prepare() {
 		// Clear ares
 		areas.clear();
 		areas.add(Application.getRect());
@@ -97,10 +97,7 @@ public class GUI {
 	
 	public static boolean buttonDown(String text, Rect r, GUIStyle normalStyle, GUIStyle hoverStyle) {
 		int down = button(text, r, normalStyle, hoverStyle);
-		if(down == 2) {
-			return true;
-		}
-		return false;
+		return down == 2;
 	}
 	
 	public static boolean buttonPressed(String text, Rect r, String normalStyle, String hoverStyle) {
@@ -109,10 +106,7 @@ public class GUI {
 	
 	public static boolean buttonPressed(String text, Rect r, GUIStyle normalStyle, GUIStyle hoverStyle) {
 		int pressed = button(text, r, normalStyle, hoverStyle);
-		if(pressed == 1) {
-			return true;
-		}
-		return false;
+		return pressed == 1;
 	}
 	
 	private static int button(String text, Rect r, GUIStyle normalStyle, GUIStyle hoverStyle) {
@@ -166,47 +160,47 @@ public class GUI {
 		//Get the top left corner of the box using corresponding padding values and draw it using a texture drawing method
 		Rect tl = new Rect(r.x, r.y, e.padding.x, e.padding.y);
 		Rect tlu = new Rect(e.uv.x, e.uv.y, e.paddingUV.x, e.paddingUV.y);
-		DrawTextureWithTextCoords(t, tl, tlu);
+		drawTextureWithTextCoords(t, tl, tlu);
 		
 		//Get the top right corner of the box using corresponding padding values and draw it using a texture drawing method
 		Rect tr = new Rect((r.x + r.width) - e.padding.width, r.y, e.padding.width, e.padding.y);
 		Rect tru = new Rect((e.uv.x + e.uv.width) - e.paddingUV.width, e.uv.y, e.paddingUV.width, e.paddingUV.y);
-		DrawTextureWithTextCoords(t, tr, tru);
+		drawTextureWithTextCoords(t, tr, tru);
 		
 		//Get the bottom left corner of the box using corresponding padding values and draw it using a texture drawing method
 		Rect bl = new Rect(r.x, (r.y + r.height) - e.padding.height, e.padding.x, e.padding.height);
 		Rect blu = new Rect(e.uv.x, (e.uv.y + e.uv.height) - e.paddingUV.height, e.paddingUV.x, e.paddingUV.height);
-		DrawTextureWithTextCoords(t, bl, blu);
+		drawTextureWithTextCoords(t, bl, blu);
 		
 		//Get the bottom right corner of the box using corresponding padding values and draw it using a texture drawing method
 		Rect br = new Rect(tr.x, bl.y, e.padding.width, e.padding.height);
 		Rect bru = new Rect(tru.x, blu.y, e.paddingUV.width, e.paddingUV.height);
-		DrawTextureWithTextCoords(t, br, bru);
+		drawTextureWithTextCoords(t, br, bru);
 		
 		//Get the left side of the box using corresponding padding values and draw it using a texture drawing method
 		Rect l = new Rect(r.x, r.y + e.padding.y, e.padding.x, r.height - (e.padding.y + e.padding.height));
 		Rect lu = new Rect(e.uv.x, e.uv.y + e.paddingUV.y, e.paddingUV.x, e.uv.height - (e.paddingUV.y + e.paddingUV.height));
-		DrawTextureWithTextCoords(t, l, lu);
+		drawTextureWithTextCoords(t, l, lu);
 		
 		//Get the right side of the box using corresponding padding values and draw it using a texture drawing method
 		Rect ri = new Rect(tr.x, r.y + e.padding.y, e.padding.width, l.height);
 		Rect ru = new Rect(tru.x, lu.y, e.paddingUV.width, lu.height);
-		DrawTextureWithTextCoords(t, ri, ru);
+		drawTextureWithTextCoords(t, ri, ru);
 		
 		//Get the top of the box using corresponding padding values and draw it using a texture drawing method
 		Rect ti = new Rect(r.x + e.padding.x, r.y, r.width - (e.padding.x + e.padding.width), e.padding.y);
 		Rect tu = new Rect(e.uv.x + e.paddingUV.x, e.uv.y, e.uv.width - (e.paddingUV.x + e.paddingUV.width), e.paddingUV.y);
-		DrawTextureWithTextCoords(t, ti, tu);
+		drawTextureWithTextCoords(t, ti, tu);
 		
 		//Get the bottom of the box using corresponding padding values and draw it using a texture drawing method
 		Rect b = new Rect(ti.x, bl.y, ti.width, e.padding.height);
 		Rect bu = new Rect(tu.x, blu.y, tu.width, e.paddingUV.height);
-		DrawTextureWithTextCoords(t, b, bu);
+		drawTextureWithTextCoords(t, b, bu);
 		
 		//Get the center of the box using corresponding padding values and draw it using a texture drawing method
 		Rect c = new Rect(ti.x, l.y, ti.width, l.height);
 		Rect cu = new Rect(tu.x, lu.y, tu.width, lu.height);
-		DrawTextureWithTextCoords(t, c, cu);
+		drawTextureWithTextCoords(t, c, cu);
 		
 		//Return the center rectangle
 		return c;
@@ -220,7 +214,7 @@ public class GUI {
 		for(i = 0; i < c.length; i++) {
 			Glyph glyph = chars.get(c[i]);
 			
-			DrawTextureWithTextCoords(font.getTexture(), new Rect(tempX, y, glyph.scale.x, glyph.scale.y), new Rect(glyph.position.x, glyph.position.y, glyph.size.x, glyph.size.y), textColor);
+			drawTextureWithTextCoords(font.getTexture(), new Rect(tempX, y, glyph.scale.x, glyph.scale.y), new Rect(glyph.position.x, glyph.position.y, glyph.size.x, glyph.size.y), textColor);
 
 			tempX += glyph.scale.x;
 		}
@@ -232,15 +226,15 @@ public class GUI {
 		mesh.unbind();
 	}
 	
-	public static void DrawTexture(Texture tex, Rect r) {
-		DrawTextureWithTextCoords(tex, r, new Rect(0, 0, 1, 1));
+	public static void drawTexture(Texture tex, Rect r) {
+		drawTextureWithTextCoords(tex, r, new Rect(0, 0, 1, 1));
 	}
 	
-	public static void DrawTextureWithTextCoords(Texture tex, Rect drawRect, Rect uvRect) {
-		DrawTextureWithTextCoords(tex, drawRect, uvRect, tintColor);
+	public static void drawTextureWithTextCoords(Texture tex, Rect drawRect, Rect uvRect) {
+		drawTextureWithTextCoords(tex, drawRect, uvRect, tintColor);
 	}
 	
-	public static void DrawTextureWithTextCoords(Texture tex, Rect drawRect, Rect uvRect, Color c) {
+	public static void drawTextureWithTextCoords(Texture tex, Rect drawRect, Rect uvRect, Color c) {
 		if(area == null) return;
 		Rect r = area.getIntersection(new Rect(drawRect.x + area.x, drawRect.y + area.y, drawRect.width, drawRect.height));
 		if(r==null) return;

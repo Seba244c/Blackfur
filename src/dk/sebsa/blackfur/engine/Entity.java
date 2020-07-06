@@ -46,7 +46,7 @@ public class Entity {
 		if(e==null) e = master;
 		
 		if(parent != null) {
-			if(parent!=e) parent.removeChild(this);
+			if(!parent.equals(e)) parent.removeChild(this);
 			else return;
 		}
 		

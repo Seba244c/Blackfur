@@ -23,7 +23,7 @@ public class Core {
 	
 	public static void main(String[] args) throws IOException {
 		try {
-			window = Application.Init();
+			window = Application.init();
 			clearColor = Color.black();
 			
 			// Test component

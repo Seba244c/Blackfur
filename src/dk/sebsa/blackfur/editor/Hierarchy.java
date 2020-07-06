@@ -9,7 +9,6 @@ import dk.sebsa.blackfur.engine.Rect;
 import dk.sebsa.blackfur.gui.GUI;
 
 public class Hierarchy {
-	private Rect clickRect;
 	private int i;
 	
 	public Hierarchy() {
@@ -33,8 +32,8 @@ public class Hierarchy {
 			Entity entity = updateList.get(0);
 			List<Entity> children = entity.getChildren();
 			
-			if(children.size() > 0) {
-				if(entity.isExpanded()) for(i = 0; i < children.size(); i++) {
+			if(children.size() > 0 && entity.isExpanded()) {
+				for(i = 0; i < children.size(); i++) {
 					updateList.add(0, children.get(i));
 				}
 			}
@@ -44,11 +43,11 @@ public class Hierarchy {
 			}
 			
 			float inline = (entity.getInline()) * 16;
-			clickRect = new Rect(0, offsetY, r.width, 20);
+			Rect clickRect = new Rect(0, offsetY, r.width, 20);
 			
 			Entity selected = Editor.getSelected();
-			if(selected != null) {
-				if(entity == selected) GUI.box(clickRect, "Box");
+			if(selected != null && entity == selected) {
+				GUI.box(clickRect, "Box");
 			}
 			
 			if(children.size() > 0) {
@@ -61,9 +60,8 @@ public class Hierarchy {
 			
 			clickRect.set(0, r.y+offsetY, r.width, 20);
 			
-			if(clickRect.inRect(Application.input.getMousePosition())) {
-				if(Application.input.isButtonPressed(0))
-					Editor.setSelected(entity);
+			if(clickRect.inRect(Application.input.getMousePosition()) && Application.input.isButtonPressed(0)) {
+				Editor.setSelected(entity);
 			}
 			
 			offsetY += 20;
