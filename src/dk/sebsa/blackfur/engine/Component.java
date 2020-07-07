@@ -4,15 +4,15 @@ public abstract class Component {
 	public boolean enabled = true;
 	
 	private String name = "";
-	private Entity owner;
+	protected Entity entity;
 	
 	public Component() {
 		name = getClass().getSimpleName();
 	}
 	
 	public void init(Entity owner) {
-		if(this.owner==null)
-			this.owner = owner;
+		if(this.entity==null)
+			this.entity = owner;
 	}
 	
 	public void awake() {
@@ -34,7 +34,7 @@ public abstract class Component {
 	public void print(float f) { Debug.log(f); }
 	
 	public final Entity getOwner() {
-		return owner;
+		return entity;
 	}
 	
 	public String getName() {

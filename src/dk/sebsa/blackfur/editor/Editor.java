@@ -35,7 +35,7 @@ public class Editor {
 		GUI.prepare();
 		
 		Debug.draw();
-		GUI.window(new Rect(0, 0, 250, Application.getHeight() - 30), "Hierarchy", hierarchy::render, windowStyle);
+		GUI.window(new Rect(0, 0, 400, Application.getHeight() - 30), "Hierarchy", hierarchy::render, windowStyle);
 		GUI.window(new Rect(Application.getWidth()-400, 0, 400, Application.getHeight() - 30), "Inspector", inspector::render, windowStyle);
 		
 		GUI.unbind();

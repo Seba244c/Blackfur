@@ -55,6 +55,14 @@ public class Sprite {
 			e.printStackTrace();
 		}
 	}
+	
+	public Rect getUV() {
+		if(offset == null) return null;
+		
+		float w = material.texture.getWidth();
+		float h = material.texture.getHeight();
+		return new Rect(offset.x / w, offset.y / h, offset.width / w, offset.height / h);
+	}
 
 	public static Sprite getSprite(String name) {
 		for(i = 0; i < sprites.size(); i++ ) {
