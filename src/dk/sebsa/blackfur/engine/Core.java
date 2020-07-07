@@ -59,6 +59,7 @@ public class Core {
 				// Render the editor
 				Editor.render();
 				
+				// Render sprites
 				Renderer.addToRender(sr);
 				Renderer.render(new Rect(400, 0, Application.getWidth()-800, Application.getHeight() - 30));
 				

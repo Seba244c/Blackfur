@@ -5,12 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.lwjgl.opengl.GL11.*;
+
+import dk.sebsa.blackfur.gui.GUI;
 import dk.sebsa.blackfur.math.Matrix4x4;
 
 public class Renderer {
 	private static Map<Material, List<SpriteRenderer>> batch = new HashMap<Material, List<SpriteRenderer>>();
 	private static Mesh mesh;
 	private static Matrix4x4 projection;
+	private static FBO fbo;
 	
 	public static void init() {
 		float[] square = new float[] {
@@ -22,6 +26,8 @@ public class Renderer {
 				1, 1, 0, 1, 0, 0
 		};
 		mesh = new Mesh(square, uv);
+		
+		fbo = new FBO(Application.getWidth(), Application.getHeight());
 	}
 	
 	public static void addToRender(SpriteRenderer renderer) {
@@ -35,6 +41,10 @@ public class Renderer {
 	}
 	
 	public static void render(Rect r) {
+		fbo.bindFrameBuffer();
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(0, 0, 0, 1);
+		
 		float w = Application.getWidth();
 		float h = Application.getHeight();
 		float halfW = w * 0.5f;
@@ -60,5 +70,10 @@ public class Renderer {
 		
 		mesh.unbind();
 		batch.clear();
+		fbo.unBind();
+		
+		GUI.prepare();
+		GUI.drawTextureWithTextCoords(fbo.getTexture(), r, new Rect(r.x / w, r.y / h, r.width / w, r.height / h));
+		GUI.unbind();
 	}
 }
