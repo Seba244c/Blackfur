@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.BufferUtils;
 
 import org.lwjgl.opengl.GL20;
@@ -13,12 +16,18 @@ import dk.sebsa.blackfur.math.Color;
 import dk.sebsa.blackfur.math.Matrix4x4;
 
 public class Shader {
+	public String name;
+	private static List<Shader> shaders = new ArrayList<Shader>();
+	
+	private static int i;
 	private int program;
 	private int vs;
 	private int fs;
 	private static Color boundColor = Color.transparent();
 	
 	public Shader(String fileName) throws IOException {
+		name = fileName;
+		
 		// Program
 		program = GL20.glCreateProgram();
 		if (program == 0)
@@ -66,6 +75,8 @@ public class Shader {
 		if (GL20.glGetProgrami(program, GL20.GL_VALIDATE_STATUS) == 0) {
         	System.err.println("Warning validating Shader code: " + GL20.glGetProgramInfoLog(program, 1024));
         }
+		
+		shaders.add(this);
 	}
 	
 	@SuppressWarnings("resource")
@@ -135,5 +146,12 @@ public class Shader {
 
 	public static Color getBoundColor() {
 		return boundColor;
+	}
+	
+	public static Shader find(String name) {
+		for(i = 0; i < shaders.size(); i++ ) {
+			if(shaders.get(i).name.equals(name)) return shaders.get(i);
+		}
+		return null;
 	}
 }

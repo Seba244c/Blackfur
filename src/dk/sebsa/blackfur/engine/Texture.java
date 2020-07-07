@@ -65,6 +65,12 @@ public class Texture {
 		boundTexture=id;
 	}
 	
+	public void unbind() {
+		if(boundTexture==id)
+			glBindTexture(GL_TEXTURE_2D, 0);
+		resetBound();
+	}
+	
 	public static Texture findTexture(String textureName) {
 		for(i = 0; i < textureInstances.size(); i++) {
 			tmp = textureInstances.get(i);

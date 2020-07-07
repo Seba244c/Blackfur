@@ -45,7 +45,7 @@ public class Debug {
 	
 	public static void draw() {
 		if(GUI.buttonPressed(Debug.lastEntry(), new Rect(0, Application.getHeight()-30, Application.getWidth(), 30), "Button", "ButtonHover") ) {
-			tinyfd_messageBox("Debug Log", Debug.getLog(), "cancel", "", true);
+			tinyfd_messageBox("Debug Log", Debug.getLog(), "ok", "", true);
 		}
 	}
 }
