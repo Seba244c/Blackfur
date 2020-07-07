@@ -96,7 +96,7 @@ public class GUI {
 		endArea();
 		
 		float half = (r.width - padding) / 2.0f;
-		float x = floatField(new Rect(r.x + padding, r.y, half, r.height), "x", v.x, 10);
+		float x = floatField(new Rect(r.x + padding - 5, r.y, half, r.height), "x", v.x, 10);
 		float y = floatField(new Rect(r.x + padding + half, r.y, half, r.height), "y", v.y, 10);
 		return new Vector2f(x, y);
 	}

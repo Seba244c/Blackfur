@@ -13,9 +13,9 @@ public class Entity {
 	public String tag = "Untagged";
 	public String name = "New Entity";
 	
-	private Vector2f position;
-	private Vector2f scale;
-	private float rotation;
+	private Vector2f position = new Vector2f();
+	private Vector2f scale = new Vector2f(1, 1);
+	private float rotation = 0;
 	
 	private Entity parent;
 	private List<Entity> children = new ArrayList<Entity>();

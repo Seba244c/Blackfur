@@ -25,10 +25,18 @@ public class Inspector {
 	}
 	
 	public void render(Rect r) {
+		// Get Selected
 		Entity selected = Editor.getSelected();
 		if(selected == null) return;
 		
-		int offsetY = 0;
+		// Render transform info and name
+		selected.name = GUI.textField(new Rect(0, 0, r.width, 22), "Entity", selected.name, 100);
+		selected.setPosition(GUI.vectorField(new Rect(0, 24, r.width, 22), "Position", selected.getPosition(), 100));
+		selected.setScale(GUI.vectorField(new Rect(0, 48, r.width, 22), "Scale", selected.getScale(), 100));
+		selected.setRotation(GUI.floatField(new Rect(0, 72, r.width, 22), "Rotation", selected.getRotation(), 100));
+		int offsetY = 96;
+		
+		// Render components
 		for(i = 0; i < ca.size(); i++) {
 			ComponentAttributes att = ca.get(i);
 			
@@ -36,7 +44,8 @@ public class Inspector {
 			GUI.window(new Rect(0, offsetY, r.width, h), att.component.getName(), this::drawVariables, windowStyle);
 			offsetY += h + 2;
 		}
-		
+	
+		// Add component button
 		if(GUI.buttonReleased("+ Add Component +", new Rect(0, offsetY, r.width, 26), "Button", "ButtonHover")) {
 			String output = TinyFileDialogs.tinyfd_inputBox("Add Component", "What component would you like to add?", "");
 			
