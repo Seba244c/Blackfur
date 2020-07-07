@@ -7,12 +7,14 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import dk.sebsa.blackfur.engine.Application;
+import dk.sebsa.blackfur.engine.Debug;
 import dk.sebsa.blackfur.engine.Mesh;
 import dk.sebsa.blackfur.engine.Rect;
 import dk.sebsa.blackfur.engine.Shader;
 import dk.sebsa.blackfur.engine.Texture;
 import dk.sebsa.blackfur.math.Color;
 import dk.sebsa.blackfur.math.Matrix4x4;
+import dk.sebsa.blackfur.math.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.tinyfd.TinyFileDialogs.tinyfd_inputBox;
@@ -65,18 +67,38 @@ public class GUI {
 		
 	}
 	
-	public static String textField(Rect r, String name, String v) {
-		beginArea(new Rect(r.x, r.y, 100, r.height));
+	public static String textField(Rect r, String name, String v, float padding) {
+		beginArea(new Rect(r.x, r.y, padding, r.height));
 		label(name, 0, 0);
 		endArea();
 		
 		// This is temp has to change
-		if(buttonReleased(v, new Rect(r.x+100, r.y, r.width - 100, r.height), "Box", "Box")) {
-			String s = tinyfd_inputBox("Changing " + name + "!", "What would you like this string to be?", v);
+		if(buttonReleased(v, new Rect(r.x + padding, r.y, r.width - padding, r.height), "Box", "Box")) {
+			String s = tinyfd_inputBox("Changing " + name + "!", "What would you like this varible to be?", v);
 			if(s!=null)
 				return s.replaceAll("\\n", "").replaceAll("\\r", "").replaceAll("\\t", "");
 		}
 		return v;
+	}
+	
+	public static float floatField(Rect r, String name, Float v, float padding) {
+		String ret = GUI.textField(r, name, String.valueOf(v), padding);
+		float f = v;
+		
+		try { f = Float.parseFloat(ret); }
+		catch (NumberFormatException e) { Debug.log("Float field input is inviliad! ue#0001"); }
+		return f;
+	}
+	
+	public static Vector2f vectorField(Rect r, String name, Vector2f v, float padding) {
+		beginArea(new Rect(r.x, r.y, padding, r.height));
+		label(name, 0, 0);
+		endArea();
+		
+		float half = (r.width - padding) / 2.0f;
+		float x = floatField(new Rect(r.x + padding, r.y, half, r.height), "x", v.x, 10);
+		float y = floatField(new Rect(r.x + padding + half, r.y, half, r.height), "y", v.y, 10);
+		return new Vector2f(x, y);
 	}
 	
 	public static boolean buttonReleased(String text, Rect r, String normalStyle, String hoverStyle) {

@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import dk.sebsa.blackfur.math.Vector2f;
+
 public class Entity {
 	public boolean enabled = true;
 	private int i;
 	
 	public String tag = "Untagged";
 	public String name = "New Entity";
+	
+	private Vector2f position;
+	private Vector2f scale;
+	private float rotation;
 	
 	private Entity parent;
 	private List<Entity> children = new ArrayList<Entity>();
@@ -128,4 +134,13 @@ public class Entity {
 	public List<Component> getComponents() {
 		return components;
 	}
+
+	public final Vector2f getPosition() { return position; }
+	public void setPosition(Vector2f p) { position.set(p); }
+	
+	public final Vector2f getScale() { return scale; }
+	public void setScale(Vector2f s) { scale.set(s); }
+
+	public final float getRotation() { return rotation; }
+	public void setRotation(float r)  { rotation = r; }
 }

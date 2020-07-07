@@ -1,6 +1,7 @@
 package dk.sebsa.blackfur.editor;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import dk.sebsa.blackfur.engine.Entity;
 import dk.sebsa.blackfur.engine.Rect;
 import dk.sebsa.blackfur.gui.GUI;
 import dk.sebsa.blackfur.gui.GUIStyle;
+import dk.sebsa.blackfur.math.Vector2f;
 
 public class Inspector {
 	private List<ComponentAttributes> ca = new ArrayList<ComponentAttributes>();
@@ -35,7 +37,7 @@ public class Inspector {
 			offsetY += h + 2;
 		}
 		
-		if(GUI.buttonReleased("      + Add Component + ", new Rect(0, offsetY, r.width, 26), "Button", "ButtonHover")) {
+		if(GUI.buttonReleased("+ Add Component +", new Rect(0, offsetY, r.width, 26), "Button", "ButtonHover")) {
 			String output = TinyFileDialogs.tinyfd_inputBox("Add Component", "What component would you like to add?", "");
 			
 			if(output == null) return;
@@ -45,11 +47,15 @@ public class Inspector {
 				cls = Class.forName("dk.sebsa.blackfur.game." + output);
 				
 				try {
-					selected.addComponent((Component) cls.newInstance());
+					selected.addComponent((Component) cls.getConstructor().newInstance());
 					setAttributes(selected);
 				} catch (InstantiationException | IllegalAccessException e) {
 					TinyFileDialogs.tinyfd_messageBox("Could not add component!", "The component you are trying to add does not exist in the game package", "ok", "Error", true);
 				}
+				catch (IllegalArgumentException e) { e.printStackTrace();
+				} catch (InvocationTargetException e) { e.printStackTrace();
+				} catch (NoSuchMethodException e) { e.printStackTrace();
+				} catch (SecurityException e) { e.printStackTrace(); }
 			} catch (ClassNotFoundException e) {
 				TinyFileDialogs.tinyfd_messageBox("Could not add component!", "The component you are trying to add does not exist in the game package", "ok", "Error", true);
 			}
@@ -67,45 +73,72 @@ public class Inspector {
 			if(split[1].equals("String")) {
 				try {
 					Field s = a.c.getDeclaredField(split[0]);
-					String p = s.get(a.component).toString();
-					String v = GUI.textField(new Rect(0, f * 22 + padding, r.width, 22), split[0], p);
-					if(!p.equals(v))
-						s.set(a.component, v);
-				} catch (Exception e) {
-					e.printStackTrace();
+					try {
+						String p = s.get(a.component).toString();
+						String v = GUI.textField(new Rect(0, f * 22 + padding, r.width, 22), split[0], p, 100);
+						if(!p.equals(v))
+							s.set(a.component, v);
+					}
+					catch(IllegalArgumentException e) { e.printStackTrace(); }
+					catch(IllegalAccessException e) { e.printStackTrace(); }
 				}
+				catch (NoSuchFieldException e) { e.printStackTrace(); }
+				catch (SecurityException e) { e.printStackTrace(); }
 			}
 			else if(split[1].equals("float")) {
 				try {
 					Field s = a.c.getDeclaredField(split[0]);
-					String p = s.get(a.component).toString();
-					String v = GUI.textField(new Rect(0, f * 22 + padding, r.width, 22), split[0], p);
-					if(!p.equals(v)) {
-						try { s.set(a.component, Float.parseFloat(v)); }
-						catch (NumberFormatException e) {
-							Debug.log("Float field input is inviliad! ue#0001");
-						}
-					}	
-				} catch (Exception e) {
-					e.printStackTrace();
+					try {
+						String p = s.get(a.component).toString();
+						
+						float fl = Float.parseFloat(p);
+						float v = GUI.floatField(new Rect(0, f * 22 +padding, r.width, 22), split[0], fl, 100);
+						if(!p.equals(String.valueOf(v)))
+							s.set(a.component, v);
+						
+					}
+					catch(IllegalArgumentException e) { e.printStackTrace(); }
+					catch(IllegalAccessException e) { e.printStackTrace(); }
 				}
+				catch (NoSuchFieldException e) { e.printStackTrace(); }
+				catch (SecurityException e) { e.printStackTrace(); }
 			}
 			else if(split[1].equals("int")) {
 				try {
 					Field s = a.c.getDeclaredField(split[0]);
-					String p = s.get(a.component).toString();
-					String v = GUI.textField(new Rect(0, f * 22 + padding, r.width, 22), split[0], p);
-					if(!p.equals(v)) {
-						try { s.set(a.component, Integer.parseInt(v)); }
-						catch (NumberFormatException e) {
-							Debug.log("Int field input is inviliad! ue#0001");
-						}
-					}	
-				} catch (Exception e) {
-					e.printStackTrace();
+					try {
+						String p = s.get(a.component).toString();
+						String v = GUI.textField(new Rect(0, f * 22 + padding, r.width, 22), split[0], p, 100);
+						if(!p.equals(v)) {
+							try { s.set(a.component, Integer.parseInt(v)); }
+							catch (NumberFormatException e) {
+								Debug.log("Int field input is inviliad! ue#0001");
+							}
+						}	
+					}
+					catch(IllegalArgumentException e) { e.printStackTrace(); }
+					catch(IllegalAccessException e) { e.printStackTrace(); }
 				}
+				catch (NoSuchFieldException e) { e.printStackTrace(); }
+				catch (SecurityException e) { e.printStackTrace(); }
 			}
-			else { GUI.textField(new Rect(0, f * 22 + padding, r.width, 22), split[0], ""); }
+			else if(split[1].equals("Vector2f")) {
+				try {
+					Field s = a.c.getDeclaredField(split[0]);
+					try {
+						Vector2f p = (Vector2f) s.get(a.component);
+						Vector2f v = GUI.vectorField(new Rect(0, f * 22 + padding, r.width, 22), split[0], p, 100);
+						if(!p.equals(v)) {
+							s.set(a.component, v);
+						}	
+					}
+					catch(IllegalArgumentException e) { e.printStackTrace(); }
+					catch(IllegalAccessException e) { e.printStackTrace(); }
+				}
+				catch (NoSuchFieldException e) { e.printStackTrace(); }
+				catch (SecurityException e) { e.printStackTrace(); }
+			}
+			else { GUI.textField(new Rect(0, f * 22 + padding, r.width, 22), split[0], "", 100); }
 			padding += 2;
 		}
 	}

@@ -6,15 +6,14 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
 
 import dk.sebsa.blackfur.input.Input;
 import dk.sebsa.blackfur.math.Color;
 
 public class Application {
 	private static final String name = "Blackfur Engine";
-	private static int width = 800;
-	private static int height = 600;
+	private static int width = 1280;
+	private static int height = 720;
 	public static boolean resized;
 	private static long window;
 	private static Rect r;
