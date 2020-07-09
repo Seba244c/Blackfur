@@ -16,4 +16,8 @@ public class SpriteRenderer extends Component {
 		Rect uvRect = sprite.getUV();
 		sprite.material.shader.setUniform("offset", uvRect.x, uvRect.y, uvRect.width, uvRect.height);
 	}
+	
+	public void prepare() {
+		Renderer.addToRender(this);
+	}
 }

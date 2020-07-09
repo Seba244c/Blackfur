@@ -17,6 +17,7 @@ public class Application {
 	public static boolean resized;
 	private static long window;
 	private static Rect r;
+	private static byte minemiszed = 0;
 	
 	public static Input input;
 	private static GLFWWindowSizeCallback sizeCallback;
@@ -72,13 +73,16 @@ public class Application {
 	}
 	
 	public static void onResize(long window, int w, int h) {
+		if(w == 0 && h == 0 ) minemiszed = 1;
+		else minemiszed = 0;
 		width = w;
         height = h;
         r.set(0, 0, w, h);
         glViewport(0, 0, w, h);
         resized = true;
+        Renderer.updateFBO(w, h);
 	}
-
+	
 	public static int getWidth() {
 		return width;
 	}
@@ -91,21 +95,6 @@ public class Application {
 		return window;
 	}
 	
-	public static void update(Color clearColor) {
-		glfwPollEvents();
-		
-		// Clear screen
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
-		
-		input.update();
-		resized = false;
-	}
-	
-	public static void lateUpdate() {
-		input.late();
-	}
-	
 	public static void cleanup() {
 		input.cleanup(window);
 		sizeCallback.close();
@@ -113,5 +102,9 @@ public class Application {
 
 	public static Rect getRect() {
 		return r;
+	}
+
+	public static final boolean isMinemiszed() {
+		return minemiszed == 1;
 	}
 }

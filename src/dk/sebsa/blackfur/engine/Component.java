@@ -27,6 +27,9 @@ public abstract class Component {
 	public void onGUI() {
 		// Whilst gui is renderd
 	}
+	public void prepare() {
+		// Happens add start if frame
+	}
 	
 	public void print(String s) { Debug.log(s); }
 	public void print(int i) { Debug.log(i); }

@@ -28,6 +28,7 @@ public class Entity {
 	private static Entity master = new Entity(false);
 	
 	private static List<Entity> instances = new ArrayList<Entity>();
+	private static int h;
 	
 	public Entity(boolean addToHierarchy) {
 		id = UUID.randomUUID().toString();
@@ -73,10 +74,14 @@ public class Entity {
 		components.remove(c);
 	}
 	
+	public void removeComponent(String name) {
+		components.remove(getComponent(name));
+	}
+	
 	public void addComponent(Component c) {
-		if(getComponent(c.getName()) == null)
-			c.init(this);
-			components.add(c);
+		if(c == null) { Debug.log("Could not findt component!"); return; }
+		c.init(this);
+		components.add(c);
 	}
 	
 	public void removeChild(Entity e) {
@@ -105,6 +110,14 @@ public class Entity {
 		for(i = 0; i < children.size(); i++) {
 			children.get(i).setInline(inline+1);
 		}
+	}
+	
+	public static Entity find(String s) {
+		for(h = 0; h < instances.size(); h++ ) {
+			Entity e = instances.get(h);
+			if(e.name.equals(s)) return e;
+		}
+		return null;
 	}
 
 	public Entity getParent() {
@@ -143,4 +156,16 @@ public class Entity {
 
 	public final float getRotation() { return rotation; }
 	public void setRotation(float r)  { rotation = r; }
+	
+	public void prepare() {
+		for(i = 0; i < components.size(); i++) {
+			components.get(i).prepare();
+		}
+	}
+	
+	public static void prepareAll() {
+		for(h = 0; h < instances.size(); h++) {
+			instances.get(h).prepare();
+		}
+	}
 }

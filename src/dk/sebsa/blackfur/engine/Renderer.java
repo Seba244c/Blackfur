@@ -27,7 +27,7 @@ public class Renderer {
 		};
 		mesh = new Mesh(square, uv);
 		
-		fbo = new FBO(Application.getWidth(), Application.getHeight());
+		updateFBO(Application.getWidth(), Application.getHeight());
 	}
 	
 	public static void addToRender(SpriteRenderer renderer) {
@@ -42,8 +42,8 @@ public class Renderer {
 	
 	public static void render(Rect r) {
 		fbo.bindFrameBuffer();
+		glClearColor(0, 1, 1, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(0, 0, 0, 1);
 		
 		float w = Application.getWidth();
 		float h = Application.getHeight();
@@ -75,5 +75,9 @@ public class Renderer {
 		GUI.prepare();
 		GUI.drawTextureWithTextCoords(fbo.getTexture(), r, new Rect(r.x / w, r.y / h, r.width / w, r.height / h));
 		GUI.unbind();
+	}
+	
+	public static void updateFBO(int width, int height) {
+		fbo = new FBO(width, height);
 	}
 }

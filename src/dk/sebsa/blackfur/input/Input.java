@@ -12,16 +12,17 @@ import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 
 import dk.sebsa.blackfur.engine.Application;
+import dk.sebsa.blackfur.math.Convert;
 import dk.sebsa.blackfur.math.Vector2f;
 
 enum CoursorImage{Pointer, Hand, HScroll, VScroll}
 public class Input {
-	private boolean[] keys = new boolean[GLFW.GLFW_KEY_LAST];
-	private boolean[] keysPressed = new boolean[GLFW.GLFW_KEY_LAST];
-	private boolean[] keysReleased = new boolean[GLFW.GLFW_KEY_LAST];
-	private boolean[] buttons = new boolean[GLFW.GLFW_MOUSE_BUTTON_LAST];
-	private boolean[] buttonsPressed = new boolean[GLFW.GLFW_MOUSE_BUTTON_LAST];
-	private boolean[] buttonsReleased = new boolean[GLFW.GLFW_MOUSE_BUTTON_LAST];
+	private byte[] keys;
+	private byte[] keysPressed;
+	private byte[] keysReleased;
+	private byte[] buttons;
+	private byte[] buttonsPressed;
+	private byte[] buttonsReleased;
 	private double mouseX;
 	private double mouseY;
 	private double prevMouseX;
@@ -29,7 +30,7 @@ public class Input {
 	private double scrollX;
 	private double scrollY;
 	private final Vector2f displVec;
-	private boolean inWindow = false;
+	private byte inWindow = 0;
 	private final long window;
 	private GLFWKeyCallback keyboard;
 	private GLFWCursorPosCallback mouseMove;
@@ -39,6 +40,14 @@ public class Input {
 	private Vector2f position;
 	
 	public Input() {
+		// Bool to byte
+		keys = Convert.keys;
+		keysPressed = Convert.keys.clone();
+		keysReleased = Convert.keys.clone();
+		buttons = Convert.buttons.clone();
+		buttonsPressed = Convert.buttons.clone();
+		buttonsReleased = Convert.buttons.clone();
+		
 		displVec = new Vector2f();
 		position = new Vector2f();
 		this.window = Application.getWindow();
@@ -46,12 +55,12 @@ public class Input {
 		keyboard = new GLFWKeyCallback() {
 			public void invoke(long window, int key, int scancode, int action, int mods) {
 				if(key != -1) {
-					keys[key] = (action != GLFW.GLFW_RELEASE);
+					keys[key] = (byte)(action != GLFW.GLFW_RELEASE?1:0);
 					if(action == 1) {
-						keysPressed[key] = (true);
+						keysPressed[key] = 1;
 					}
 					if(action == 0) {
-						keysReleased[key] = (true);
+						keysReleased[key] = 1;
 					}
 				}
 			}
@@ -66,12 +75,12 @@ public class Input {
 		
 		mouseButtons = new GLFWMouseButtonCallback() {
 			public void invoke(long window, int button, int action, int mods) {
-				buttons[button] = (action != GLFW.GLFW_RELEASE);
+				buttons[button] = (byte)(action != GLFW.GLFW_RELEASE?1:0);
 				if(action == 1) {
-					buttonsPressed[button] = (true);
+					buttonsPressed[button] = 1;
 				}
 				if(action == 0) {
-					buttonsReleased[button] = (true);
+					buttonsReleased[button] = 1;
 				}
 			}
 		};
@@ -86,34 +95,34 @@ public class Input {
 		cursorEnter = new GLFWCursorEnterCallback() {
 			@Override
 			public void invoke(long windowId, boolean entered) {
-				inWindow = entered;
+				inWindow = (byte)(entered?1:0);
 			}
 		};
 	}
 	
 	public boolean isKeyDown(int key) {
 		System.out.println(keys[key]);
-		return keys[key];
+		return keys[key] == 1;
 	}
 	
 	public boolean isKeyPressed(int key) {
-		return keysPressed[key];
+		return keysPressed[key] == 1;
 	}
 	
 	public boolean isKeyReleased(int key) {
-		return keysReleased[key];
+		return keysReleased[key] == 1;
 	}
 	
 	public boolean isButtonDown(int button) {
-		return buttons[button];
+		return buttons[button] == 1;
 	}
 	
 	public boolean isButtonPressed(int button) {
-		return buttonsPressed[button];
+		return buttonsPressed[button] == 1;
 	}
 	
 	public boolean isButtonReleased(int button) {
-		return buttonsReleased[button];
+		return buttonsReleased[button] == 1;
 	}
 	
 	public void cleanup(long windowId) {
@@ -156,7 +165,7 @@ public class Input {
 		// displayVec
 		displVec.x = 0;
         displVec.y = 0;
-        if (prevMouseX > 0 && prevMouseY > 0 && inWindow) {
+        if (prevMouseX > 0 && prevMouseY > 0 && inWindow == 1) {
             double deltax = mouseX - prevMouseX;
             double deltay = mouseY - prevMouseY;
             boolean rotateX = deltax != 0;
@@ -173,14 +182,14 @@ public class Input {
 	}
 	
 	public void late() {
-		keysPressed = new boolean[GLFW.GLFW_KEY_LAST];
-		keysReleased = new boolean[GLFW.GLFW_KEY_LAST];
-		buttonsPressed = new boolean[GLFW.GLFW_KEY_LAST];
-		buttonsReleased = new boolean[GLFW.GLFW_KEY_LAST];
+		keysPressed = Convert.keys.clone();
+		keysReleased = Convert.keys.clone();
+		buttonsPressed = Convert.buttons.clone();
+		buttonsReleased = Convert.buttons.clone();
 	}
 	
 	public void centerCursor() {
-		if (inWindow) {
+		if (inWindow == 1) {
 			glfwSetCursorPos(window, Application.getWidth() / 2, Application.getHeight() / 2);
 			prevMouseX = Application.getWidth() / 2;
 			prevMouseY = Application.getHeight() / 2;
@@ -188,7 +197,7 @@ public class Input {
 	}
 	
 	public void centerCursor2() {
-		if (inWindow) {
+		if (inWindow == 1) {
 			glfwSetCursorPos(window, Application.getWidth() / 2, Application.getHeight() / 2);
 			prevMouseX = Application.getWidth() / 2;
 			prevMouseY = Application.getHeight() / 2;

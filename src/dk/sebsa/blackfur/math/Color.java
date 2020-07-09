@@ -28,8 +28,8 @@ public class Color {
 	public static Color forest() {return new Color(0, 0.5f, 0);}
 	public static Color marine() {return new Color(0, 0, 0.5f);}
 	public static Color yellow() {return new Color(1, 1, 0);}
-	public static Color cyan() {return new Color(1, 0, 1);}
-	public static Color magenta() {return new Color(0, 1, 1);}
+	public static Color cyan() {return new Color(0, 1, 1);}
+	public static Color magenta() {return new Color(1, 0, 1);}
 	public static Color transparent() {return new Color(0, 0, 0, 0);}
 	
 	public String toString() {

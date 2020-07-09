@@ -1,15 +1,19 @@
 package dk.sebsa.blackfur.engine;
 
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 
-import java.awt.print.Printable;
 import java.io.IOException;
 
 import dk.sebsa.blackfur.editor.Editor;
@@ -18,6 +22,7 @@ import dk.sebsa.blackfur.game.Tets;
 import dk.sebsa.blackfur.gui.GUI;
 import dk.sebsa.blackfur.gui.Sprite;
 import dk.sebsa.blackfur.math.Color;
+import dk.sebsa.blackfur.math.Convert;
 import dk.sebsa.blackfur.math.Vector2f;
 
 public class Core {
@@ -53,18 +58,26 @@ public class Core {
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			
 			while(!glfwWindowShouldClose(window)) {
-				// Update Application
-				Application.update(clearColor);
+				// Poll events
+				glfwPollEvents();
 				
-				// Render the editor
-				Editor.render();
-				
-				// Render sprites
-				Renderer.addToRender(sr);
-				Renderer.render(new Rect(400, 0, Application.getWidth()-800, Application.getHeight() - 30));
-				
-				// End frame
-				Application.lateUpdate();
+				if(!Application.isMinemiszed()) {
+					// Update base updates
+					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+					Application.input.update();
+					Application.resized = false;
+					
+					// run compoent method 1
+					Entity.prepareAll();
+					
+					// Rendering
+					Editor.render();
+					Renderer.render(new Rect(400, 0, Application.getWidth()-800, Application.getHeight() - 30));
+					glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
+					
+					// End frame
+					Application.input.late();
+				}
 				glfwSwapBuffers(window);
 			}
 		} catch (Exception e) {
