@@ -8,7 +8,6 @@ import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 
 import dk.sebsa.blackfur.input.Input;
-import dk.sebsa.blackfur.math.Color;
 
 public class Application {
 	private static final String name = "Blackfur Engine";
@@ -22,6 +21,7 @@ public class Application {
 	public static Input input;
 	private static GLFWWindowSizeCallback sizeCallback;
 	
+	@SuppressWarnings("resource")
 	public static long init() {
 		GLFWErrorCallback.createPrint(System.err).set();
 		

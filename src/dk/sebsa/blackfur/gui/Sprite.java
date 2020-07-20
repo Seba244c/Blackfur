@@ -1,9 +1,8 @@
 package dk.sebsa.blackfur.gui;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +30,9 @@ public class Sprite {
 		BufferedReader br;
 		
 		try {
-			br = new BufferedReader(new FileReader(new File("./res/Sprites/"+name+".spr")));
+			//br = new BufferedReader(new FileReader(new File("./res/Sprites/"+name+".spr")));
+			InputStreamReader isr =  new InputStreamReader(Sprite.class.getResourceAsStream("/Sprites/" + name + ".spr"));
+			br = new BufferedReader(isr);
 			
 			// Get name
 			this.name = name;

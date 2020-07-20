@@ -10,7 +10,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -30,10 +29,15 @@ public class Font {
 	
 	private Map<Character, Glyph> chars = new HashMap<Character, Glyph>();
 	
-	public Font(String name, float size) {
+	@SuppressWarnings("resource")
+	public Font(String name, float size) {		
 		try {
-			font = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("res/Font/"+name+".ttf")).deriveFont(size);
+			font = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, Font.class.getResourceAsStream("/Font/" + name + ".ttf")).deriveFont(size);
 		} catch (FontFormatException e) { e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); }
+		
+		//try {
+		//	font = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("res/Font/"+name+".ttf")).deriveFont(size);
+		//} catch (FontFormatException e) { e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); }
 		
 		generateFont();
 	}

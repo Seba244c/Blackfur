@@ -6,9 +6,8 @@ import dk.sebsa.blackfur.engine.Rect;
 import dk.sebsa.blackfur.engine.Texture;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class GUISkin {
@@ -16,13 +15,14 @@ public class GUISkin {
 	public Texture texture;
 	private int i;
 	
-	@SuppressWarnings("resource")
 	public GUISkin(String name) {
 		BufferedReader br;
 	
 		try {
-			br = new BufferedReader(new FileReader(new File("./res/Skins/"+name+".skin")));
-			texture = Texture.findTexture(br.readLine().split(" ")[1]);	
+			InputStreamReader isr =  new InputStreamReader(GUISkin.class.getResourceAsStream("/Skins/" + name + ".skin"));
+			br = new BufferedReader(isr);
+			
+			texture = Texture.findTexture(br.readLine().split(" ")[1]);
 			
 			String line = br.readLine();
 			while(line!=null) {

@@ -2,12 +2,15 @@ package dk.sebsa.blackfur.engine;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
-import static org.lwjgl.stb.STBImage.stbi_load;
+import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
 
 import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -32,8 +35,25 @@ public class Texture {
 		IntBuffer heightBuffer = BufferUtils.createIntBuffer(1);
 		IntBuffer channelsBuffer = BufferUtils.createIntBuffer(1);
 		
-		ByteBuffer dataBuffer = stbi_load("./res/Textures/"+filename, widthBuffer, heightBuffer, channelsBuffer, 4);
+		// Load texture
+		//ByteBuffer dataBuffer = stbi_load("./res/Textures/"+filename, widthBuffer, heightBuffer, channelsBuffer, 4);
 		
+		InputStream is = Texture.class.getResourceAsStream("/Textures/" + name);
+		byte[] bytes = new byte[8000];
+		int curByte = 0;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		
+		try {
+			while((curByte = is.read(bytes)) != -1) { bos.write(bytes, 0, curByte);}
+			is.close();
+		}
+		catch (IOException e) { e.printStackTrace(); }
+		
+		bytes = bos.toByteArray();
+		ByteBuffer buffer = (ByteBuffer) BufferUtils.createByteBuffer(bytes.length);
+		buffer.put(bytes).flip();
+		ByteBuffer data = stbi_load_from_memory(buffer, widthBuffer, heightBuffer, channelsBuffer, 4);
+				
 		id = glGenTextures();
 		width = widthBuffer.get();
 		height = heightBuffer.get();
@@ -43,8 +63,8 @@ public class Texture {
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, dataBuffer);
-		stbi_image_free(dataBuffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		stbi_image_free(data);
 		
 		textureInstances.add(this);
 	}

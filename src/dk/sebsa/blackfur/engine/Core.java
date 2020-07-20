@@ -22,7 +22,6 @@ import dk.sebsa.blackfur.game.Tets;
 import dk.sebsa.blackfur.gui.GUI;
 import dk.sebsa.blackfur.gui.Sprite;
 import dk.sebsa.blackfur.math.Color;
-import dk.sebsa.blackfur.math.Convert;
 import dk.sebsa.blackfur.math.Vector2f;
 
 public class Core {

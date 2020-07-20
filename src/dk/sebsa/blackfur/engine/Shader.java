@@ -1,9 +1,8 @@
 package dk.sebsa.blackfur.engine;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +32,14 @@ public class Shader {
 		if (program == 0)
             throw new IllegalStateException("Could not create Shader");
         
+		String[] shader = createShader(fileName);
 		
 		// Vertex
 		vs = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
 		if (vs == 0)
             throw new IllegalStateException("Error creating shader. Type: Vertex Shader");
         
-		GL20.glShaderSource(vs, createShader(fileName + ".vs"));
+		GL20.glShaderSource(vs, shader[0]);
 		GL20.glCompileShader(vs);
 		
 		if(GL20.glGetShaderi(vs, GL20.GL_COMPILE_STATUS) != 1) 
@@ -48,9 +48,9 @@ public class Shader {
 		// Fragment
 		fs = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
 		if (vs == 0)
-            throw new IllegalStateException("Error creating shader. Type: Vertex Shader");
+            throw new IllegalStateException("Error creating shader. Type: Fragment Shader");
         
-		GL20.glShaderSource(fs, createShader(fileName + ".fs"));
+		GL20.glShaderSource(fs, shader[1]);
 		GL20.glCompileShader(fs);
 		
 		if(GL20.glGetShaderi(fs, GL20.GL_COMPILE_STATUS) != 1) 
@@ -79,12 +79,11 @@ public class Shader {
 		shaders.add(this);
 	}
 	
-	@SuppressWarnings("resource")
-	private String createShader(String fileName) {
+	private String[] createShader(String fileName) {
 		StringBuilder stringBuilder = new StringBuilder();
 		BufferedReader bufferedReader;
 		try {
-			bufferedReader = new BufferedReader(new FileReader(new File("./res/Shaders/"+fileName)));
+			bufferedReader = new BufferedReader(new InputStreamReader(Shader.class.getResourceAsStream("/Shaders/" + fileName + ".glsl")));
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				stringBuilder.append(line);
@@ -94,7 +93,7 @@ public class Shader {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return stringBuilder.toString();
+		return stringBuilder.toString().split("ENDVERTEX");
 	}
 	
 	public void setUniform(String name, Color c) {
