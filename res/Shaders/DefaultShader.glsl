@@ -35,5 +35,5 @@ out vec4 fragColor;
 
 void main()
 {
-	fragColor = color * texture2D(sampler, uvCoords);
+	fragColor = color * texture(sampler, uvCoords);
 }
