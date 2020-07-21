@@ -61,7 +61,6 @@ public class Renderer {
 			
 			List<SpriteRenderer> renderers = batch.get(material);
 			for(SpriteRenderer renderer : renderers) {
-				material.shader.bind();
 				renderer.setUniforms();
 				mesh.render();
 			}

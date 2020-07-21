@@ -52,8 +52,7 @@ public class Shader {
             throw new IllegalStateException("Error creating shader. Type: Fragment Shader");
         
 		GL20.glShaderSource(fs, shader[1]);
-		GL20.glCompileShader(fs);
-		
+		GL20.glCompileShader(fs);			
 		if(GL20.glGetShaderi(fs, GL20.GL_COMPILE_STATUS) != 1) 
 			throw new IOException("Error compiling Shader code: " + GL20.glGetShaderInfoLog(fs, 1024));
 		
