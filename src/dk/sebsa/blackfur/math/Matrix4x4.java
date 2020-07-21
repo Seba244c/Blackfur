@@ -41,4 +41,13 @@ public class Matrix4x4 {
 		
 		return matrix;
 	}
+	
+	public void setTransform(Vector2f p, float r) {
+		float radians = (float) Math.toRadians(r);
+		float cos = (float) Math.cos(radians);
+		float sin = (float) Math.sin(radians);
+		
+		m[0][0] = cos; m[0][1] = sin; m[0][3] = p.x;
+		m[1][0] = -sin; m[1][1] = cos; m[1][3] = p.y;
+	}
 }

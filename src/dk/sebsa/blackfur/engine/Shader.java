@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL20;
 
 import dk.sebsa.blackfur.math.Color;
 import dk.sebsa.blackfur.math.Matrix4x4;
+import dk.sebsa.blackfur.math.Vector2f;
 
 public class Shader {
 	public String name;
@@ -104,6 +105,10 @@ public class Shader {
 	public void setUniform(String name, float x, float y) {
 		int location = GL20.glGetUniformLocation(program, name);
 		if(location != -1) GL20.glUniform2f(location, x, y);
+	}
+	
+	public void setUniform(String name, Vector2f v) {
+		setUniform(name, v.x, v.y); 
 	}
 	
 	public void setUniform(String name, float x, float y, float z, float w) {

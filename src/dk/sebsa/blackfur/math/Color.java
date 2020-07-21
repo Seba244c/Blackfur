@@ -18,19 +18,19 @@ public class Color {
 		this.b = Mathf.clamp(b, 0, 1);
 	}
 	
-	public static Color black() {return new Color(0, 0, 0);}
-	public static Color white() {return new Color(1, 1, 1);}
-	public static Color red() {return new Color(1, 0, 0);}
-	public static Color green() {return new Color(0, 1, 0);}
-	public static Color blue() {return new Color(0, 0, 1);}
-	public static Color grey() {return new Color(0.5f, 0.5f, 0.5f);}
-	public static Color wine() {return new Color(0.5f, 0, 0);}
-	public static Color forest() {return new Color(0, 0.5f, 0);}
-	public static Color marine() {return new Color(0, 0, 0.5f);}
-	public static Color yellow() {return new Color(1, 1, 0);}
-	public static Color cyan() {return new Color(0, 1, 1);}
-	public static Color magenta() {return new Color(1, 0, 1);}
-	public static Color transparent() {return new Color(0, 0, 0, 0);}
+	public static final Color black() {return new Color(0, 0, 0);}
+	public static final Color white() {return new Color(1, 1, 1);}
+	public static final Color red() {return new Color(1, 0, 0);}
+	public static final Color green() {return new Color(0, 1, 0);}
+	public static final Color blue() {return new Color(0, 0, 1);}
+	public static final Color grey() {return new Color(0.5f, 0.5f, 0.5f);}
+	public static final Color wine() {return new Color(0.5f, 0, 0);}
+	public static final Color forest() {return new Color(0, 0.5f, 0);}
+	public static final Color marine() {return new Color(0, 0, 0.5f);}
+	public static final Color yellow() {return new Color(1, 1, 0);}
+	public static final Color cyan() {return new Color(0, 1, 1);}
+	public static final Color magenta() {return new Color(1, 0, 1);}
+	public static final Color transparent() {return new Color(0, 0, 0, 0);}
 	
 	public String toString() {
 		return "("+String.valueOf(r)+", "+String.valueOf(g)+", "+String.valueOf(b)+", "+String.valueOf(a)+")";

@@ -44,6 +44,7 @@ public class Core {
 			Renderer.init();
 			
 			// Test rendering
+			new Shader("DefaultGameShader");
 			new Texture("SMW-Tileset.png");
 			new Material("SMWTiles");
 			Sprite s = new Sprite("test");

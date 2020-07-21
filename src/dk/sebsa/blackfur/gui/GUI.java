@@ -45,8 +45,7 @@ public class GUI {
 			1, 0, 0, 0, 0, 1
 		};
 		mesh = new Mesh(square, square);
-		shader = new Shader("DefaultShader");
-		
+		shader = new Shader("DefaultEngineShader");
 		font = new Font(new java.awt.Font("TimesRoman", java.awt.Font.PLAIN, 16));
 	}
 	

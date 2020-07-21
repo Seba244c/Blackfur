@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import dk.sebsa.blackfur.math.Matrix4x4;
 import dk.sebsa.blackfur.math.Vector2f;
 
 public class Entity {
@@ -16,6 +17,7 @@ public class Entity {
 	private Vector2f position = new Vector2f();
 	private Vector2f scale = new Vector2f(1, 1);
 	private float rotation = 0;
+	private Matrix4x4 matrix = new Matrix4x4();
 	
 	private Entity parent;
 	private List<Entity> children = new ArrayList<Entity>();
@@ -23,7 +25,7 @@ public class Entity {
 	private int inline = 0;
 	private String id;
 	
-	// For editor
+	private byte dirty = 1;
 	private boolean expanded = false;
 	private static Entity master = new Entity(false);
 	
@@ -47,6 +49,18 @@ public class Entity {
 		this.name = name;
 		instances.add(this);
 		parent(master);
+	}
+	
+	public final boolean isDirty() {
+		return dirty == 1;
+	}
+	
+	public void updateMatrix() {
+		matrix.setTransform(position, rotation);
+	}
+	
+	public final Matrix4x4 getMatrix() {
+		return matrix;
 	}
 	
 	public void parent(Entity e) {
@@ -149,13 +163,19 @@ public class Entity {
 	}
 
 	public final Vector2f getPosition() { return position; }
-	public void setPosition(Vector2f p) { position.set(p); }
+	public void setPosition(Vector2f p) {
+		position.set(p);
+		dirty = 1;
+	}
 	
 	public final Vector2f getScale() { return scale; }
 	public void setScale(Vector2f s) { scale.set(s); }
 
 	public final float getRotation() { return rotation; }
-	public void setRotation(float r)  { rotation = r; }
+	public void setRotation(float r)  {
+		rotation = r;
+		dirty = 1;
+	}
 	
 	public void prepare() {
 		for(i = 0; i < components.size(); i++) {

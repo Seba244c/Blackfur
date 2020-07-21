@@ -5,13 +5,18 @@ import dk.sebsa.blackfur.math.Vector2f;
 
 public class SpriteRenderer extends Component {
 	public Sprite sprite;
-	private Vector2f scale;
+	public Vector2f anchor = new Vector2f(0, 0);
 	
 	public void setUniforms() {
-		sprite.material.shader.setUniform("screenPos", entity.getPosition().x, entity.getPosition().y);
+		sprite.material.shader.setUniform("anchor", anchor);
 		
-		scale = entity.getScale();
-		sprite.material.shader.setUniform("pixelScale", sprite.offset.width * scale.x, sprite.offset.height * scale.y);
+		if(entity.isDirty()) { entity.updateMatrix(); }
+		sprite.material.shader.setUniform("transformMatrix", entity.getMatrix());
+		sprite.material.shader.setUniform("objectScale", entity.getScale());
+		
+		sprite.material.shader.setUniform("screenPos", entity.getPosition());
+		
+		sprite.material.shader.setUniform("pixelScale", sprite.offset.width, sprite.offset.height);
 		
 		Rect uvRect = sprite.getUV();
 		sprite.material.shader.setUniform("offset", uvRect.x, uvRect.y, uvRect.width, uvRect.height);
