@@ -29,12 +29,13 @@ public class GUI {
 	
 	private static int i;
 	private static char[] c;
-	private static Font font;
+	public static Font font;
 	private static float tempX;
 	public static GUISkin skin;
 	
 	private static Rect area = new Rect(0, 0, Application.getWidth(), Application.getHeight());
 	private static List<Rect> areas = new ArrayList<Rect>();
+	private static Popup popup;
 	
 	public static void init() throws IOException {
 		skin = GUISkin.getSkin("DefaultGUI");
@@ -63,6 +64,20 @@ public class GUI {
 		mesh.bind();
 		
 		
+	}
+	
+	public static boolean hasPopup() {
+		return popup != null;
+	}
+	
+	public static void setPopup(Rect nameRect, List<String> list, Consumer<String> func) {
+		popup = new Popup(nameRect, list, func);
+	}
+	
+	public static void drawPopup() {
+		if(popup != null)  {
+			popup = popup.draw();
+		}
 	}
 	
 	public static String textField(Rect r, String name, String v, float padding) {

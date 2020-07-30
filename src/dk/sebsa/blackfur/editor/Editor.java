@@ -12,6 +12,7 @@ public class Editor {
 	private static Hierarchy hierarchy;
 	private static Inspector inspector;
 	private static ProjectPanel projectPanel;
+	private static MenuBar menuBar;
 	
 	private static Entity selected;
 	private static Object selectedAsset;
@@ -32,6 +33,7 @@ public class Editor {
 		hierarchy = new Hierarchy();
 		inspector = new Inspector();
 		projectPanel = new ProjectPanel();
+		menuBar = new MenuBar();
 	}
 	
 	public static void render() {
@@ -39,8 +41,9 @@ public class Editor {
 		GUI.prepare();
 		
 		Debug.draw();
-		GUI.window(new Rect(0, 0, 400, Application.getHeight() - 30), "Hierarchy", hierarchy::render, windowStyle);
-		GUI.window(new Rect(Application.getWidth()-400, 0, 400, Application.getHeight() - 30), "Inspector", inspector::render, windowStyle);
+		menuBar.render();
+		GUI.window(new Rect(0, 30, 400, Application.getHeight() - 60), "Hierarchy", hierarchy::render, windowStyle);
+		GUI.window(new Rect(Application.getWidth()-400, 30, 400, Application.getHeight() - 60), "Inspector", inspector::render, windowStyle);
 		GUI.window(new Rect(0, Application.getHeight() - 230, 400, 200), "Asset Types", projectPanel::renderTypes, windowStyle);
 		GUI.window(new Rect(400, Application.getHeight() - 230, Application.getWidth() - 400, 200), "Assets", projectPanel::renderAssets, windowStyle);
 		

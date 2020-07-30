@@ -72,8 +72,16 @@ public class Core {
 					// Rendering
 					Editor.render();
 					
-					Renderer.render(new Rect(400, 0, Application.getWidth()-800, Application.getHeight() - 230));
+					Renderer.render(new Rect(400, 30, Application.getWidth()-800, Application.getHeight() - 260));
+					
 					glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
+					
+					// GUI stuff not in editor
+					GUI.prepare();
+					
+					GUI.drawPopup();
+					
+					GUI.unbind();
 					
 					// End frame
 					Application.input.late();
