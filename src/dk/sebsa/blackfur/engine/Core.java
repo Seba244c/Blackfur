@@ -33,6 +33,8 @@ public class Core {
 			window = Application.init();
 			clearColor = Color.black();
 			
+			AssetDatabase.loadAllResources();
+			
 			// Test component
 			Entity entity = new Entity("Jens");
 			entity.addComponent(new Test());
@@ -44,10 +46,7 @@ public class Core {
 			Renderer.init();
 			
 			// Test rendering
-			new Shader("DefaultGameShader");
-			new Texture("SMW-Tileset.png");
-			new Material("SMWTiles");
-			Sprite s = new Sprite("test");
+			Sprite s = Sprite.getSprite("test");
 			SpriteRenderer sr = new SpriteRenderer();
 			entity.addComponent(sr);
 			sr.sprite = s;
@@ -67,7 +66,7 @@ public class Core {
 					Application.input.update();
 					Application.resized = false;
 					
-					// run compoent method 1
+					// run component method 1
 					Entity.prepareAll();
 					
 					// Rendering

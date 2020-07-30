@@ -37,7 +37,6 @@ public class GUI {
 	private static List<Rect> areas = new ArrayList<Rect>();
 	
 	public static void init() throws IOException {
-		new Texture("DefaultGUI.png");
 		skin = new GUISkin("DefaultGUI");
 		
 		float[] square = new float[] {
@@ -45,7 +44,7 @@ public class GUI {
 			1, 0, 0, 0, 0, 1
 		};
 		mesh = new Mesh(square, square);
-		shader = new Shader("DefaultEngineShader");
+		shader = Shader.find("DefaultEngineShader");
 		font = new Font(new java.awt.Font("TimesRoman", java.awt.Font.PLAIN, 16));
 	}
 	
