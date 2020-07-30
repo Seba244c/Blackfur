@@ -72,7 +72,7 @@ public class Core {
 					// Rendering
 					Editor.render();
 					
-					Renderer.render(new Rect(400, 0, Application.getWidth()-800, Application.getHeight() - 30));
+					Renderer.render(new Rect(400, 0, Application.getWidth()-800, Application.getHeight() - 230));
 					glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
 					
 					// End frame

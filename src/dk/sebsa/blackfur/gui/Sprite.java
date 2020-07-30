@@ -71,4 +71,8 @@ public class Sprite {
 		}
 		return null;
 	}
+
+	public static List<Sprite> getSprites() {
+		return sprites;
+	}
 }

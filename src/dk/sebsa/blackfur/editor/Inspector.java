@@ -18,6 +18,7 @@ import dk.sebsa.blackfur.math.Vector2f;
 public class Inspector {
 	private List<ComponentAttributes> ca = new ArrayList<ComponentAttributes>();
 	private int i = 0;
+	private int offsetY = 0;
 	public GUIStyle windowStyle;
 	
 	public Inspector() {
@@ -25,49 +26,57 @@ public class Inspector {
 	}
 	
 	public void render(Rect r) {
-		// Get Selected
-		Entity selected = Editor.getSelected();
-		if(selected == null) return;
+		Object inspected = Editor.getInspected();
+		if(inspected == null) return;
 		
-		// Render transform info and name
-		selected.name = GUI.textField(new Rect(0, 0, r.width, 22), "Entity", selected.name, 100);
-		selected.setPosition(GUI.vectorField(new Rect(0, 24, r.width, 22), "Position", selected.getPosition(), 100));
-		selected.setScale(GUI.vectorField(new Rect(0, 48, r.width, 22), "Scale", selected.getScale(), 100));
-		selected.setRotation(GUI.floatField(new Rect(0, 72, r.width, 22), "Rotation", selected.getRotation(), 100));
-		int offsetY = 96;
-		
-		// Render components
-		for(i = 0; i < ca.size(); i++) {
-			ComponentAttributes att = ca.get(i);
+		if(inspected instanceof Entity) {
+			// Get Selected
+			Entity selected = (Entity) inspected;
+			//if(selected == null) return;
+			// Render transform info and name
+			selected.name = GUI.textField(new Rect(0, 0, r.width, 22), "Entity", selected.name, 100);
+			selected.setPosition(GUI.vectorField(new Rect(0, 24, r.width, 22), "Position", selected.getPosition(), 100));
+			selected.setScale(GUI.vectorField(new Rect(0, 48, r.width, 22), "Scale", selected.getScale(), 100));
+			selected.setRotation(GUI.floatField(new Rect(0, 72, r.width, 22), "Rotation", selected.getRotation(), 100));
+			int offsetY = 96;
 			
-			float h = att.height + (windowStyle.padding.y + windowStyle.padding.height);
-			GUI.window(new Rect(0, offsetY, r.width, h), att.component.getName(), this::drawVariables, windowStyle);
-			offsetY += h + 2;
-		}
-	
-		// Add component button
-		if(GUI.buttonReleased("+ Add Component +", new Rect(0, offsetY, r.width, 26), "Button", "ButtonHover")) {
-			String output = TinyFileDialogs.tinyfd_inputBox("Add Component", "What component would you like to add?", "");
-			
-			if(output == null) return;
-			
-			Class<?> cls;
-			try {
-				cls = Class.forName("dk.sebsa.blackfur.game." + output);
+			// Render components
+			for(i = 0; i < ca.size(); i++) {
+				ComponentAttributes att = ca.get(i);
 				
+				float h = att.height + (windowStyle.padding.y + windowStyle.padding.height);
+				GUI.window(new Rect(0, offsetY, r.width, h), ((Component) att.component).getName(), this::drawVariables, windowStyle);
+				offsetY += h + 2;
+			}
+		
+			// Add component button
+			if(GUI.buttonReleased("+ Add Component +", new Rect(0, offsetY, r.width, 26), "Button", "ButtonHover")) {
+				String output = TinyFileDialogs.tinyfd_inputBox("Add Component", "What component would you like to add?", "");
+				
+				if(output == null) return;
+				
+				Class<?> cls;
 				try {
-					selected.addComponent((Component) cls.getConstructor().newInstance());
-					setAttributes(selected);
-				} catch (InstantiationException | IllegalAccessException e) {
+					cls = Class.forName("dk.sebsa.blackfur.game." + output);
+					
+					try {
+						selected.addComponent((Component) cls.getConstructor().newInstance());
+						setAttributes(selected);
+					} catch (InstantiationException | IllegalAccessException e) {
+						TinyFileDialogs.tinyfd_messageBox("Could not add component!", "The component you are trying to add does not exist in the game package", "ok", "Error", true);
+					}
+					catch (IllegalArgumentException e) { e.printStackTrace();
+					} catch (InvocationTargetException e) { e.printStackTrace();
+					} catch (NoSuchMethodException e) { e.printStackTrace();
+					} catch (SecurityException e) { e.printStackTrace(); }
+				} catch (ClassNotFoundException e) {
 					TinyFileDialogs.tinyfd_messageBox("Could not add component!", "The component you are trying to add does not exist in the game package", "ok", "Error", true);
 				}
-				catch (IllegalArgumentException e) { e.printStackTrace();
-				} catch (InvocationTargetException e) { e.printStackTrace();
-				} catch (NoSuchMethodException e) { e.printStackTrace();
-				} catch (SecurityException e) { e.printStackTrace(); }
-			} catch (ClassNotFoundException e) {
-				TinyFileDialogs.tinyfd_messageBox("Could not add component!", "The component you are trying to add does not exist in the game package", "ok", "Error", true);
 			}
+		}
+		else {
+			i = 0;
+			GUI.window(new Rect(0, offsetY, r.width, ca.get(0).height + (windowStyle.padding.y + windowStyle.padding.height)), ca.get(0).component.getClass().getSimpleName(), this::drawVariables, windowStyle);
 		}
 	}
 	
@@ -152,12 +161,18 @@ public class Inspector {
 		}
 	}
 	
-	public void setAttributes(Entity entity) {
+	public void setAttributes(Object o) {
 		ca.clear();
-		List<Component> c = entity.getComponents();
-		
-		for(i = 0; i < c.size(); i++) {
-			ca.add(new ComponentAttributes(c.get(i)));
+		if(o instanceof Entity) {
+			List<Component> c = ((Entity) o).getComponents();
+			
+			for(i = 0; i < c.size(); i++) {
+				ComponentAttributes a = new ComponentAttributes(o);
+				if(a != null) ca.add(new ComponentAttributes(c.get(i)));
+			}
+			return;
 		}
+		ComponentAttributes a = new ComponentAttributes(o);
+		if(a != null) ca.add(a);
 	}
 }

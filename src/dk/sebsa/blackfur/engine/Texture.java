@@ -122,4 +122,8 @@ public class Texture {
 	public static void resetBound() {
 		boundTexture = -1;
 	}
+	
+	public final String getName() {
+		return name;
+	}
 }
