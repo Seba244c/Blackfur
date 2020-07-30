@@ -31,7 +31,7 @@ public class Sprite {
 		
 		try {
 			//br = new BufferedReader(new FileReader(new File("./res/Sprites/"+name+".spr")));
-			InputStreamReader isr =  new InputStreamReader(Sprite.class.getResourceAsStream("/Sprites/" + name + ".spr"));
+			InputStreamReader isr =  new InputStreamReader(Sprite.class.getResourceAsStream("/Sprites/" + name + ".bfs"));
 			br = new BufferedReader(isr);
 			
 			// Get name

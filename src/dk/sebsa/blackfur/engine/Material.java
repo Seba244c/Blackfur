@@ -30,7 +30,7 @@ public class Material {
 	
 		try {
 			//br = new BufferedReader(new FileReader(new File("./res/Materials/"+name+".mat")));
-			InputStreamReader isr =  new InputStreamReader(Material.class.getResourceAsStream("/Materials/" + name + ".mat"));
+			InputStreamReader isr =  new InputStreamReader(Material.class.getResourceAsStream("/Materials/" + name + ".bfm"));
 			br = new BufferedReader(isr);
 			
 			// Get name

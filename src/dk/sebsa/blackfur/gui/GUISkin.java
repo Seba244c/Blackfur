@@ -19,7 +19,7 @@ public class GUISkin {
 		BufferedReader br;
 	
 		try {
-			InputStreamReader isr =  new InputStreamReader(GUISkin.class.getResourceAsStream("/Skins/" + name + ".skin"));
+			InputStreamReader isr =  new InputStreamReader(GUISkin.class.getResourceAsStream("/Skins/" + name + ".bfo"));
 			br = new BufferedReader(isr);
 			
 			texture = Texture.findTexture(br.readLine().split(" ")[1]);
