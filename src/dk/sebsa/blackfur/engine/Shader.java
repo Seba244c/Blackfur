@@ -26,7 +26,7 @@ public class Shader {
 	private static List<Shader> shaders = new ArrayList<Shader>();
 	private static int i;
 	
-	private static Color boundColor = Color.transparent();
+	private Color boundColor = Color.transparent();
 	
 	public Shader(String fileName) throws IOException {
 		name = fileName;
@@ -150,7 +150,7 @@ public class Shader {
         }
     }
 
-	public static Color getBoundColor() {
+	public Color getBoundColor() {
 		return boundColor;
 	}
 	
