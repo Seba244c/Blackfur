@@ -80,6 +80,10 @@ public class GUI {
 		}
 	}
 	
+	public static void removePopup() {
+		popup = null;
+	}
+	
 	public static String textField(Rect r, String name, String v, float padding) {
 		beginArea(new Rect(r.x, r.y, padding, r.height));
 		label(name, 0, 0);
@@ -169,6 +173,28 @@ public class GUI {
 				label(text, p.x, p.y);
 			else
 				label(text, r.x, r.y);
+		}
+		return -1;
+	}
+	
+	public static int centeredButton(String text, Rect r, GUIStyle normalStyle, GUIStyle hoverStyle) {
+		Rect rf = r.copy();
+		rf.addPosition(area); 
+		
+		float x = rf.x + ((rf.width / 2f) - ((float) font.getStringWidth(text) / 2f));
+		float y = rf.y + ((rf.height / 2f) - (font.getFontHeight() / 2f));
+		
+		if(rf.inRect(Application.input.getMousePosition())) {
+			box(r, hoverStyle);
+			label(text, x, y);
+			
+			if(Application.input.isButtonPressed(0)) return 1;
+			if(Application.input.isButtonDown(0)) return 2;
+			if(Application.input.isButtonReleased(0)) return 0;
+		}
+		else {
+			box(r, normalStyle);
+			label(text, x, y);
 		}
 		return -1;
 	}

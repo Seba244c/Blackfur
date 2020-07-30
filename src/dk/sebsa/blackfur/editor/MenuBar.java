@@ -1,6 +1,5 @@
 package dk.sebsa.blackfur.editor;
 
-import java.awt.Menu;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.Map;
 import org.lwjgl.glfw.GLFW;
 
 import dk.sebsa.blackfur.engine.Application;
-import dk.sebsa.blackfur.engine.Debug;
 import dk.sebsa.blackfur.engine.Entity;
 import dk.sebsa.blackfur.engine.Rect;
 import dk.sebsa.blackfur.gui.GUI;
@@ -47,9 +45,12 @@ public class MenuBar {
 			float width = GUI.font.getStringWidth(m) + 10;
 			Rect nameRect = new Rect(offset-index, 0, width, 30);
 			if(selected != null && selected.equals(m)) {
-				GUI.buttonReleased(m, nameRect, box, box);
+				if(GUI.centeredButton(m, nameRect, box, box) == 1) {
+					selected = null;
+					GUI.removePopup();
+				}
 			} else {
-				if(GUI.buttonPressed(m, nameRect, empty, box)) {
+				if(GUI.centeredButton(m, nameRect, empty, box) == 1) {
 					List<MenuItem> list = menu.get(m);
 					List<String> v = new ArrayList<String>();
 					for(int i = 0; i < list.size(); i++) v.add(list.get(i).name);

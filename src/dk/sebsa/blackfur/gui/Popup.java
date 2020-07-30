@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 
 import dk.sebsa.blackfur.engine.Application;
 import dk.sebsa.blackfur.engine.Rect;
-import dk.sebsa.blackfur.input.Input;
 import dk.sebsa.blackfur.math.Color;
 import dk.sebsa.blackfur.math.Vector2f;
 
@@ -45,7 +44,7 @@ public class Popup {
 		GUI.textColor = Color.white();
 		
 		for(i = 0; i < list.size(); i++) {
-			if(GUI.buttonReleased(list.get(i), new Rect(drawArea.x, drawArea.y + (i * 28), drawArea.width, 28), null, box)) {
+			if(GUI.centeredButton(list.get(i), new Rect(drawArea.x, drawArea.y + (i * 28), drawArea.width, 28), null, box) == 0) {
 				func.accept(list.get(i));
 				GUI.textColor = prevColor;
 				return null;

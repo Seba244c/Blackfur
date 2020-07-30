@@ -29,6 +29,7 @@ public class Font {
 	private FontMetrics fontMetrics;
 	private int i;
 	private Texture texture;
+	private float h;
 	
 	private static List<Font> fonts = new ArrayList<Font>();
 	private Map<Character, Glyph> chars = new HashMap<Character, Glyph>();
@@ -58,9 +59,10 @@ public class Font {
 	private void generateFont() {
 		GraphicsConfiguration graphCon = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 		Graphics2D graphics = graphCon.createCompatibleImage(1, 1, Transparency.TRANSLUCENT).createGraphics();
-		graphics.setFont(font);
+		graphics.setFont(font);		
 		
 		fontMetrics = graphics.getFontMetrics();
+		h = (float) (fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent());
 		imageSize = new Vector2f(2048, 2048);
 		bufferedImage = graphics.getDeviceConfiguration().createCompatibleImage((int) imageSize.x, (int) imageSize.y, Transparency.TRANSLUCENT);
 		
@@ -105,7 +107,6 @@ public class Font {
 	private void drawCharaters(Graphics2D graphics2d) {
 		int tempX = 0;
 		int tempY = 0;
-		float h = (float) (fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent());
 		
 		for(i=32; i < 256; i++) {
 			if(i==127) continue;
@@ -141,6 +142,8 @@ public class Font {
 	public int getStringWidth(String s) {
 		return fontMetrics.stringWidth(s);
 	}
+	
+	public float getFontHeight() { return h; }
 	
 	public final String getName() {return name;}
 	
