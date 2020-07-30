@@ -37,7 +37,7 @@ public class GUI {
 	private static List<Rect> areas = new ArrayList<Rect>();
 	
 	public static void init() throws IOException {
-		skin = new GUISkin("DefaultGUI");
+		skin = GUISkin.getSkin("DefaultGUI");
 		
 		float[] square = new float[] {
 			0, 1, 1, 1, 1, 0,
@@ -74,7 +74,11 @@ public class GUI {
 		if(buttonReleased(v, new Rect(r.x + padding, r.y, r.width - padding, r.height), "Box", "Box")) {
 			String s = tinyfd_inputBox("Changing " + name + "!", "What would you like this varible to be?", v);
 			if(s!=null)
-				return s.replaceAll("\\n", "").replaceAll("\\r", "").replaceAll("\\t", "");
+				s = s.replaceAll("\\n", "").replaceAll("\\r", "").replaceAll("\\t", "");
+				if(s != "" && !s.startsWith(" "))
+					return s;
+				else
+					Debug.log("Invalid name! A name cannot start with a space! ue#0002");
 		}
 		return v;
 	}

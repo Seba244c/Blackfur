@@ -160,4 +160,8 @@ public class Shader {
 		}
 		return null;
 	}
+
+	public static List<Shader> getShaders() {
+		return shaders;
+	}
 }

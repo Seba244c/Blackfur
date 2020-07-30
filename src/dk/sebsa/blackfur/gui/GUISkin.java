@@ -11,7 +11,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class GUISkin {
+	private String name;
 	private List<GUIStyle> styles = new ArrayList<GUIStyle>();
+	private static List<GUISkin> skins = new ArrayList<GUISkin>();
 	public Texture texture;
 	private int i;
 	
@@ -39,6 +41,8 @@ public class GUISkin {
 			}
 			
 			br.close();
+			this.name = name;
+			skins.add(this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -50,4 +54,17 @@ public class GUISkin {
 		}
 		return null;
 	}
+	
+	public static GUISkin getSkin(String name) {
+		for(int i = 0; i < skins.size(); i++ ) {
+			if(skins.get(i).name.equals(name)) return skins.get(i);
+		}
+		return null;
+	}
+
+	public static final List<GUISkin> getSkins() {
+		return skins;
+	}
+	
+	public final String getName() { return name; }
 }

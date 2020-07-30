@@ -71,4 +71,8 @@ public class Material {
 		shader.unbind();
 		texture.unbind();
 	}
+
+	public static final List<Material> getMaterials() {
+		return materials;
+	}
 }

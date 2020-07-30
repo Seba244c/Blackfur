@@ -12,13 +12,16 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import dk.sebsa.blackfur.engine.Texture;
 import dk.sebsa.blackfur.math.Vector2f;
 
 public class Font {
+	private String name;
 	private int fontID;
 	private BufferedImage bufferedImage;
 	private Vector2f imageSize;
@@ -27,6 +30,7 @@ public class Font {
 	private int i;
 	private Texture texture;
 	
+	private static List<Font> fonts = new ArrayList<Font>();
 	private Map<Character, Glyph> chars = new HashMap<Character, Glyph>();
 	
 	@SuppressWarnings("resource")
@@ -40,11 +44,15 @@ public class Font {
 		//} catch (FontFormatException e) { e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); }
 		
 		generateFont();
+		this.name = name;
+		fonts.add(this);
 	}
 	
 	public Font(java.awt.Font font) {
 		this.font = font;
 		generateFont();
+		this.name = font.getFontName();
+		fonts.add(this);
 	}
 	
 	private void generateFont() {
@@ -132,5 +140,11 @@ public class Font {
 	
 	public int getStringWidth(String s) {
 		return fontMetrics.stringWidth(s);
+	}
+	
+	public final String getName() {return name;}
+	
+	public static final List<Font> getFonts() {
+		return fonts;
 	}
 }
