@@ -1,5 +1,12 @@
 package dk.sebsa.blackfur.editor;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
+
 import dk.sebsa.blackfur.engine.Application;
 import dk.sebsa.blackfur.engine.Debug;
 import dk.sebsa.blackfur.engine.Entity;
@@ -23,6 +30,37 @@ public class Editor {
 	public static GUIStyle arrowRight;
 	public static GUIStyle windowStyle;
 	
+	public static final String workspaceDir = System.getProperty("user.dir") + "/Blackfur-Workspace/";
+	public static final String editorVersion = "0.0.1 Snapshot";
+	public static byte configInit = 0;
+	private static String projectDir = "";
+	
+	public static void initConfig() {
+		if(configInit == 1) return;
+		configInit = 1;
+		
+		File configFile = new File(workspaceDir + "config.properties");
+		
+		try {
+			FileReader fr = new FileReader(configFile);
+			Properties p = new Properties();
+			p.load(fr);
+			
+			String recordVersion = p.getProperty("version");
+			
+			if(!editorVersion.equalsIgnoreCase(recordVersion)) {
+				System.out.println("Version changed!");
+			} else System.out.println("Same version");
+			
+			fr.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("New User");
+			saveConfig(configFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void init() {
 		skin = GUI.skin;
 		
@@ -34,6 +72,8 @@ public class Editor {
 		inspector = new Inspector();
 		projectPanel = new ProjectPanel();
 		menuBar = new MenuBar();
+		
+		
 	}
 	
 	public static void render() {
@@ -79,5 +119,40 @@ public class Editor {
 
 	public static final ProjectPanel getProjectPanel() {
 		return projectPanel;
+	}
+
+	public static void openProject(String name) {
+		projectDir = workspaceDir + name + "/";
+		
+		File dir = new File(projectDir);
+		Boolean newPro = dir.mkdir();
+		
+		new File(projectDir + "Font/").mkdir();
+		new File(projectDir + "Materials/").mkdir();
+		new File(projectDir + "Shaders/").mkdir();
+		new File(projectDir + "Skins/").mkdir();
+		new File(projectDir + "Sprites/").mkdir();
+		new File(projectDir + "Textures/").mkdir();
+		
+		if(newPro) return;
+		
+		// Put openening if project here
+	}
+	
+	private static void saveConfig(File configFile) {
+		try {
+			File dir = new File(workspaceDir);
+			dir.mkdir();
+			
+			Properties p = new Properties();
+			p.setProperty("version", editorVersion);
+			
+			FileWriter writer = new FileWriter(configFile);
+			p.store(writer, "Blackfur Configuration");
+			
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

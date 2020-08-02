@@ -17,6 +17,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import java.io.IOException;
 
 import dk.sebsa.blackfur.editor.Editor;
+import dk.sebsa.blackfur.editor.EngineBootLoader;
 import dk.sebsa.blackfur.game.Test;
 import dk.sebsa.blackfur.game.Tets;
 import dk.sebsa.blackfur.gui.GUI;
@@ -30,6 +31,11 @@ public class Core {
 	
 	public static void main(String[] args) throws IOException {
 		try {
+			// Init config
+			Editor.initConfig();
+			EngineBootLoader.init();
+			
+			// Init window
 			window = Application.init();
 			clearColor = Color.black();
 			
