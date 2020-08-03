@@ -67,7 +67,7 @@ public class Application {
 		glfwSetWindowSizeCallback(window, sizeCallback);
 		
 		// Vsync
-		glfwSwapInterval(1);
+		glfwSwapInterval(0);
 		
 		return window;
 	}

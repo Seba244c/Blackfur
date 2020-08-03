@@ -18,12 +18,8 @@ import java.io.IOException;
 
 import dk.sebsa.blackfur.editor.Editor;
 import dk.sebsa.blackfur.editor.EngineBootLoader;
-import dk.sebsa.blackfur.game.Test;
-import dk.sebsa.blackfur.game.Tets;
 import dk.sebsa.blackfur.gui.GUI;
-import dk.sebsa.blackfur.gui.Sprite;
 import dk.sebsa.blackfur.math.Color;
-import dk.sebsa.blackfur.math.Vector2f;
 
 public class Core {
 	private static long window;
@@ -45,6 +41,7 @@ public class Core {
 			GUI.init();
 			Editor.init();
 			Renderer.init();
+			Time.init();
 			
 			// Load scene
 			SceneManager.loadScene("New Scene");
@@ -62,6 +59,7 @@ public class Core {
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 					Application.input.update();
 					Application.resized = false;
+					Time.process();
 					
 					// run component method 1
 					Entity.prepareAll();
@@ -76,6 +74,7 @@ public class Core {
 					// GUI stuff not in editor
 					GUI.prepare();
 					
+					GUI.label(String.valueOf(Time.getFrameRate()), 10, Application.getHeight() / 2);
 					GUI.drawPopup();
 					
 					GUI.unbind();

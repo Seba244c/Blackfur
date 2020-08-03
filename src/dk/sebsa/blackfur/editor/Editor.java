@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.swing.Spring;
-
 import dk.sebsa.blackfur.engine.Application;
 import dk.sebsa.blackfur.engine.Component;
 import dk.sebsa.blackfur.engine.Debug;

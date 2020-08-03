@@ -16,8 +16,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import dk.sebsa.blackfur.engine.Application;
-
 public class EngineBootLoader {
 	private static JFrame frame;
 	private static Container pane;

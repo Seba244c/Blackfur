@@ -1,12 +1,9 @@
 package dk.sebsa.blackfur.engine;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import org.lwjgl.system.CallbackI.V;
 
 import dk.sebsa.blackfur.math.Matrix4x4;
 import dk.sebsa.blackfur.math.Vector2f;
@@ -94,6 +91,8 @@ public class Entity {
 	
 	public static void clear() {
 		instances.clear();
+		
+		master.children.clear();
 	}
 	
 	public Component addComponent(String c) {
