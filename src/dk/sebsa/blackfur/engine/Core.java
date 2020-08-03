@@ -41,23 +41,14 @@ public class Core {
 			
 			AssetDatabase.loadAllResources();
 			
-			// Test component
-			Entity entity = new Entity("Jens");
-			entity.addComponent(new Test());
-			entity.addComponent(new Tets());
-			
 			// Init statics
 			GUI.init();
 			Editor.init();
 			Renderer.init();
 			
-			// Test rendering
-			Sprite s = Sprite.getSprite("test");
-			SpriteRenderer sr = new SpriteRenderer();
-			entity.addComponent(sr);
-			sr.sprite = s;
-			entity.setScale(new Vector2f(2, 2));
-				
+			// Load scene
+			SceneManager.loadScene("New Scene");
+		
 			// Setup alpha
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

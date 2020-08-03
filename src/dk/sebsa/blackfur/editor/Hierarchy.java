@@ -12,15 +12,7 @@ public class Hierarchy {
 	private int i;
 	
 	public Hierarchy() {
-		Entity a = new Entity("a");
-		
-		Entity b = new Entity("b");
-		b.parent(a);
-		
-		new Entity("c");
-		
-		Entity d = new Entity("d");
-		d.parent(b);
+		// Nothing
 	}
 	
 	public void render(Rect r) {

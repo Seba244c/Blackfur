@@ -1,5 +1,6 @@
 package dk.sebsa.blackfur.editor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ public class MenuBar {
 	
 	public MenuBar() {
 		box = Editor.skin.getStyle("Box");
+		add("File", new MenuItem("Save Scene", this::file));
 		add("File", new MenuItem("Quit", this::file));
 		add("Asset", new MenuItem("New Entity", this::asset));
 	}
@@ -89,6 +91,9 @@ public class MenuBar {
 	}
 	
 	public void file(MenuItem m) {
-		if(m.name.equals("Quit")) GLFW.glfwSetWindowShouldClose(Application.getWindow(), true);;
+		if(m.name.equals("Quit")) GLFW.glfwSetWindowShouldClose(Application.getWindow(), true);
+		else if(m.name.equals("Save Scene")) {
+			try { Editor.saveScene("New Scene"); } catch (IOException e) { e.printStackTrace(); }
+		}
 	}
 }

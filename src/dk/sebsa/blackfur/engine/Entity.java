@@ -1,8 +1,12 @@
 package dk.sebsa.blackfur.engine;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import org.lwjgl.system.CallbackI.V;
 
 import dk.sebsa.blackfur.math.Matrix4x4;
 import dk.sebsa.blackfur.math.Vector2f;
@@ -88,14 +92,26 @@ public class Entity {
 		components.remove(c);
 	}
 	
-	public void removeComponent(String name) {
-		components.remove(getComponent(name));
+	public static void clear() {
+		instances.clear();
 	}
 	
-	public void addComponent(Component c) {
-		if(c == null) { Debug.log("Could not findt component!"); return; }
+	public Component addComponent(String c) {
+		Class<?> cls;
+		try {
+			cls = Class.forName(c);
+			try { return addComponent((Component) cls.getConstructor().newInstance()); }
+			catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
+			{ Debug.log("Instance of " + c + " could not be created"); }
+		} catch (ClassNotFoundException e) { Debug.log("Class " + c + " could not be found"); }
+		return null;
+	}
+	
+	public Component addComponent(Component c) {
+		if(c == null) { Debug.log("Could not findt component!"); return null; }
 		c.init(this);
 		components.add(c);
+		return c;
 	}
 	
 	public void removeChild(Entity e) {
@@ -167,9 +183,14 @@ public class Entity {
 		position.set(p);
 		dirty = 1;
 	}
+	public void setPosition(float x, float y) {
+		position.set(x, y);
+		dirty = 1;
+	}
 	
 	public final Vector2f getScale() { return scale; }
 	public void setScale(Vector2f s) { scale.set(s); }
+	public void setScale(float x, float y) { scale.set(x, y); }
 
 	public final float getRotation() { return rotation; }
 	public void setRotation(float r)  {

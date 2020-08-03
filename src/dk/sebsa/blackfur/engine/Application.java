@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL;
 import dk.sebsa.blackfur.input.Input;
 
 public class Application {
-	private static final String name = "Blackfur Engine";
+	public static String name = "Blackfur Engine";
 	private static int width = 1280;
 	private static int height = 720;
 	public static boolean resized;

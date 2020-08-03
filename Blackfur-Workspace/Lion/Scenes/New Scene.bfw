@@ -1,0 +1,36 @@
+<e name="Scene Loading" pos="69.0 69.0" scale="5.0 1.0" r="0.0">
+	<c name="dk.sebsa.blackfur.game.Test">
+		<v thing="Hello">
+		<v world="1">
+		<v flota="1.48">
+		<v enabled="true">
+	<c name="dk.sebsa.blackfur.game.Tets">
+		<v vincent="6.0 9.0">
+		<v enabled="true">
+	<c name="dk.sebsa.blackfur.engine.SpriteRenderer">
+		<v sprite="test">
+		<v anchor="0.0 0.0">
+		<v enabled="true">
+</e>
+<e name="a" pos="1.0 1.0" scale="1.0 1.0" r="0.0">
+</e>
+<e name="b" pos="1.0 1.0" scale="1.0 1.0" r="0.0">
+	<p name="a">
+</e>
+<e name="d" pos="1.0 1.0" scale="1.0 1.0" r="0.0">
+	<p name="b">
+</e>
+<e name="c" pos="1.0 1.0" scale="1.0 1.0" r="0.0">
+	<c name="dk.sebsa.blackfur.game.Tets">
+		<v vincent="6.0 9.0">
+		<v enabled="true">
+</e>
+<e name="The heat death of the universe" pos="1.0 1.0" scale="1.0 1.0" r="0.0">
+</e>
+<e name="New Entity" pos="1.0 1.0" scale="1.0 1.0" r="0.0">
+	<c name="dk.sebsa.blackfur.game.Test">
+		<v thing="Hello">
+		<v world="1">
+		<v flota="1.48">
+		<v enabled="true">
+</e>
