@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import dk.sebsa.blackfur.editor.Editor;
 import dk.sebsa.blackfur.math.Matrix4x4;
 import dk.sebsa.blackfur.math.Vector2f;
 
@@ -197,15 +198,27 @@ public class Entity {
 		dirty = 1;
 	}
 	
-	public void prepare() {
+	public void prepareToRender() {
 		for(i = 0; i < components.size(); i++) {
-			components.get(i).prepare();
+			components.get(i).prepareToRender();
 		}
 	}
 	
-	public static void prepareAll() {
+	public void update() {
+		for(i = 0; i < components.size(); i++) {
+			components.get(i).update();
+		}
+	}
+	
+	public static void prepareEntities() {
+		if(Editor.isPlaying()) {
+			for(h = 0; h < instances.size(); h++) {
+				instances.get(h).update();
+			}
+		}
+		
 		for(h = 0; h < instances.size(); h++) {
-			instances.get(h).prepare();
+			instances.get(h).prepareToRender();
 		}
 	}
 }

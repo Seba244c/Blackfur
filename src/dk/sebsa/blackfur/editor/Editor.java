@@ -15,6 +15,7 @@ import dk.sebsa.blackfur.engine.Component;
 import dk.sebsa.blackfur.engine.Debug;
 import dk.sebsa.blackfur.engine.Entity;
 import dk.sebsa.blackfur.engine.Rect;
+import dk.sebsa.blackfur.engine.SceneManager;
 import dk.sebsa.blackfur.gui.GUI;
 import dk.sebsa.blackfur.gui.Sprite;
 import dk.sebsa.blackfur.gui.GUISkin;
@@ -30,6 +31,7 @@ public class Editor {
 	private static Entity selected;
 	private static Object selectedAsset;
 	private static Object inspected;
+	private static byte playing = 0;
 	
 	public static GUISkin skin;
 	public static GUIStyle arrowDown;
@@ -81,22 +83,38 @@ public class Editor {
 		hierarchy = new Hierarchy();
 		inspector = new Inspector();
 		projectPanel = new ProjectPanel();
-		menuBar = new MenuBar();
-		
-		
+		menuBar = new MenuBar();	
+	}
+	
+	public static boolean isPlaying() { return playing == 1; }
+	
+	public static void play(boolean shouldPlay) {
+		if(shouldPlay) {
+			try {
+				saveScene(SceneManager.currentScene());
+				playing = 1;
+			} catch (IOException e) { Debug.log("Could not save scene before playing"); }
+		} else {
+			SceneManager.loadScene(SceneManager.currentScene());
+			playing = 0;
+			setSelected(null);
+		}
 	}
 	
 	public static void render() {
-		// Render gui
+		// Render Basics
 		GUI.prepare();
 		
 		Debug.draw();
 		menuBar.render();
-		GUI.window(new Rect(0, 30, 400, Application.getHeight() - 60), "Hierarchy", hierarchy::render, windowStyle);
-		GUI.window(new Rect(Application.getWidth()-400, 30, 400, Application.getHeight() - 60), "Inspector", inspector::render, windowStyle);
-		GUI.window(new Rect(0, Application.getHeight() - 230, 400, 200), "Asset Types", projectPanel::renderTypes, windowStyle);
-		GUI.window(new Rect(400, Application.getHeight() - 230, Application.getWidth() - 400, 200), "Assets", projectPanel::renderAssets, windowStyle);
 		
+		if(playing == 0) {
+			// Render editor
+			GUI.window(new Rect(0, 30, 400, Application.getHeight() - 60), "Hierarchy", hierarchy::render, windowStyle);
+			GUI.window(new Rect(Application.getWidth()-400, 30, 400, Application.getHeight() - 60), "Inspector", inspector::render, windowStyle);
+			GUI.window(new Rect(0, Application.getHeight() - 230, 400, 200), "Asset Types", projectPanel::renderTypes, windowStyle);
+			GUI.window(new Rect(400, Application.getHeight() - 230, Application.getWidth() - 400, 200), "Assets", projectPanel::renderAssets, windowStyle);
+		}
 		GUI.unbind();
 	}
 
@@ -117,7 +135,7 @@ public class Editor {
 	}
 	
 	public static final Object getInspected() {return inspected;}
-	private static void setInspected(Object o){inspected = o; inspector.setAttributes(o);}
+	private static void setInspected(Object o){inspected = o; if(o != null) inspector.setAttributes(o); }
 
 	public static final Hierarchy getHierarchy() {
 		return hierarchy;

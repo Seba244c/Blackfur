@@ -22,7 +22,7 @@ public class SpriteRenderer extends Component {
 		sprite.material.shader.setUniform("offset", uvRect.x, uvRect.y, uvRect.width, uvRect.height);
 	}
 	
-	public void prepare() {
+	public void prepareToRender() {
 		Renderer.addToRender(this);
 	}
 }

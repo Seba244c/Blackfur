@@ -19,16 +19,16 @@ public abstract class Component {
 		// When the component is intiliazed
 	}
 	public void update() {
-		// Ocurs on every frame
+		// Occurs on every frame before rendering
 	}
 	public void onWillRender() {
 		// When ready to render
 	}
 	public void onGUI() {
-		// Whilst gui is renderd
+		// Whilst gui is rendered
 	}
-	public void prepare() {
-		// Happens add start if frame
+	public void prepareToRender() {
+		// Runs before render
 	}
 	
 	public void print(String s) { Debug.log(s); }

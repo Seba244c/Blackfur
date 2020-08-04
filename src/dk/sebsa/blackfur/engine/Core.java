@@ -61,13 +61,16 @@ public class Core {
 					Application.resized = false;
 					Time.process();
 					
-					// run component method 1
-					Entity.prepareAll();
+					// run component methods
+					Entity.prepareEntities();
 					
 					// Rendering
 					Editor.render();
 					
-					Renderer.render(new Rect(400, 30, Application.getWidth()-800, Application.getHeight() - 260));
+					if(Editor.isPlaying())
+						Renderer.render(new Rect(0, 30, Application.getWidth(), Application.getHeight() - 60));
+					else
+						Renderer.render(new Rect(400, 30, Application.getWidth()-800, Application.getHeight() - 260));
 					
 					glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
 					

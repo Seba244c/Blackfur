@@ -26,11 +26,16 @@ public class MenuBar {
 	
 	private GUIStyle box;
 	private GUIStyle empty;
+	private GUIStyle play;
+	private GUIStyle stop;
+	
 	private String selected;
 	private Color prevColor;
 	
 	public MenuBar() {
 		box = Editor.skin.getStyle("Box");
+		play = Editor.skin.getStyle("PlayButton");
+		stop = Editor.skin.getStyle("StopButton");
 		
 		add("File", new MenuItem("New Scene", this::file));
 		add("File", new MenuItem("Open Scene", this::file));
@@ -72,6 +77,15 @@ public class MenuBar {
 			}
 			offset += width;
 			index++;
+		}
+		
+		GUIStyle style = play;
+		boolean isPlaying = Editor.isPlaying();
+		if(isPlaying) style = stop;
+		
+		if(GUI.buttonPressed("", new Rect(offset - index + 5, 8, 16, 16), style, style)) {
+			Editor.play(!isPlaying);
+			
 		}
 		
 		GUI.textColor = prevColor;
