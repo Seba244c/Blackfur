@@ -11,10 +11,6 @@ import dk.sebsa.blackfur.gui.GUI;
 public class Hierarchy {
 	private int i;
 	
-	public Hierarchy() {
-		// Nothing
-	}
-	
 	public void render(Rect r) {
 		List<Entity> updateList = new ArrayList<Entity>();
 		int offsetY = 0;

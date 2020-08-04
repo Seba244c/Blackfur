@@ -1,16 +1,22 @@
 package dk.sebsa.blackfur.editor;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.lwjgl.glfw.GLFW;
 
 import dk.sebsa.blackfur.engine.Application;
+import dk.sebsa.blackfur.engine.Debug;
 import dk.sebsa.blackfur.engine.Entity;
 import dk.sebsa.blackfur.engine.Rect;
+import dk.sebsa.blackfur.engine.SceneManager;
 import dk.sebsa.blackfur.gui.GUI;
 import dk.sebsa.blackfur.gui.GUIStyle;
 import dk.sebsa.blackfur.math.Color;
@@ -25,7 +31,11 @@ public class MenuBar {
 	
 	public MenuBar() {
 		box = Editor.skin.getStyle("Box");
+		
+		add("File", new MenuItem("New Scene", this::file));
+		add("File", new MenuItem("Open Scene", this::file));
 		add("File", new MenuItem("Save Scene", this::file));
+		
 		add("File", new MenuItem("Quit", this::file));
 		add("Asset", new MenuItem("New Entity", this::asset));
 	}
@@ -93,7 +103,41 @@ public class MenuBar {
 	public void file(MenuItem m) {
 		if(m.name.equals("Quit")) GLFW.glfwSetWindowShouldClose(Application.getWindow(), true);
 		else if(m.name.equals("Save Scene")) {
-			try { Editor.saveScene("New Scene"); } catch (IOException e) { e.printStackTrace(); }
+			try {
+				Editor.saveScene(SceneManager.currentScene());
+			} catch (IOException e) {
+				Debug.log("Could not save scene: " + SceneManager.currentScene());
+			}
+		} else if(m.name.equals("New Scene")) {
+			JFileChooser fc = new JFileChooser();
+			fc.setCurrentDirectory(new File(Editor.getProjectDir() + "Scenes/"));
+			fc.setFileFilter(new FileNameExtensionFilter("Blackfur World File", "bfw"));
+			
+			int result = fc.showSaveDialog(null);
+			
+			if(result == JFileChooser.APPROVE_OPTION) {
+				File temp = fc.getSelectedFile();
+				String name = temp.getName();
+				
+				if(name.endsWith(".bfw")) name = name.replace(".bfw", "");
+				
+				try {
+					File f = new File(Editor.getProjectDir() + "Scenes/" + name + ".bfw");
+					f.createNewFile();
+					SceneManager.loadScene(name);
+				} catch (IOException e) {
+					Debug.log("Could not save new scene ");
+				}
+			}
+		} else if(m.name.equals("Open Scene")) {
+			JFileChooser fc = new JFileChooser();
+			fc.setCurrentDirectory(new File(Editor.getProjectDir() + "Scenes/"));
+			fc.setFileFilter(new FileNameExtensionFilter("Blackfur World File", "bfw"));
+			
+			int result = fc.showSaveDialog(null);
+			if(result == JFileChooser.APPROVE_OPTION) {
+				SceneManager.loadScene(fc.getSelectedFile().getName().split("\\.")[0]);
+			}
 		}
 	}
 }

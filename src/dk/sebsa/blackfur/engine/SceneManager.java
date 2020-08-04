@@ -11,7 +11,15 @@ import dk.sebsa.blackfur.gui.Sprite;
 import dk.sebsa.blackfur.math.Vector2f;
 
 public class SceneManager {
+	private static String currentScene = "";
+	
+	public static final String currentScene() {
+		return currentScene;
+	}
+	
 	public static void loadScene(String name)  {
+		currentScene = name;
+		
 		FileReader fr;
 		try { fr = new FileReader(Editor.getProjectDir() + "/Scenes/" + name + ".bfw"); } catch (FileNotFoundException e) {
 			Debug.log("Scene " + name + " couldnt be found!");
