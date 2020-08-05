@@ -163,10 +163,11 @@ public class Editor {
 		new File(projectDir + "Sprites/").mkdir();
 		new File(projectDir + "Textures/").mkdir();
 		new File(projectDir + "Scenes/").mkdir();
+		new File(projectDir + "Scripts/").mkdir();
 		
 		if(newPro) return;
 		
-		// Put openening if project here
+		// Put openening of project here
 	}
 	
 	private static void saveConfig(File configFile) {

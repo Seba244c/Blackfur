@@ -1,7 +1,6 @@
 package dk.sebsa.blackfur.editor;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +54,11 @@ public class Inspector {
 				
 				if(output == null) return;
 				
+				Component c = selected.addComponent(output);
+				if(c != null)
+					setAttributes(selected);
+				
+				/*
 				Class<?> cls;
 				try {
 					cls = Class.forName("dk.sebsa.blackfur.game." + output);
@@ -71,7 +75,7 @@ public class Inspector {
 					} catch (SecurityException e) { e.printStackTrace(); }
 				} catch (ClassNotFoundException e) {
 					TinyFileDialogs.tinyfd_messageBox("Could not add component!", "The component you are trying to add does not exist in the game package", "ok", "Error", true);
-				}
+				}*/
 			}
 		}
 		else {

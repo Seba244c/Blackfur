@@ -17,6 +17,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import java.io.IOException;
 
 import dk.sebsa.blackfur.editor.Editor;
+import dk.sebsa.blackfur.editor.EditorUtil;
 import dk.sebsa.blackfur.editor.EngineBootLoader;
 import dk.sebsa.blackfur.gui.GUI;
 import dk.sebsa.blackfur.math.Color;
@@ -93,6 +94,7 @@ public class Core {
 			Texture.cleanup();
 			GUI.cleanup();
 			Mesh.cleanupAll();
+			EditorUtil.cleanUp();
 			glfwTerminate();
 		}
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import dk.sebsa.blackfur.editor.Editor;
+import dk.sebsa.blackfur.editor.EditorUtil;
 import dk.sebsa.blackfur.math.Matrix4x4;
 import dk.sebsa.blackfur.math.Vector2f;
 
@@ -96,14 +97,21 @@ public class Entity {
 		master.children.clear();
 	}
 	
-	public Component addComponent(String c) {
+	public Component addComponent(String v) {
 		Class<?> cls;
 		try {
-			cls = Class.forName(c);
+			try { cls = Class.forName(v); }
+			catch (NoClassDefFoundError e){ return null; }
+			
 			try { return addComponent((Component) cls.getConstructor().newInstance()); }
 			catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
-			{ Debug.log("Instance of " + c + " could not be created"); }
-		} catch (ClassNotFoundException e) { Debug.log("Class " + c + " could not be found"); }
+			{ Debug.log("Instance of " + v + " could not be created"); }
+		} catch (ClassNotFoundException e) {
+			Component c = EditorUtil.getComponent(v);
+			if(c != null) return addComponent(c);
+			
+			Debug.log("Class " + v + " could not be found");
+		}
 		return null;
 	}
 	

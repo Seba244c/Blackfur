@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import dk.sebsa.blackfur.editor.Editor;
+import dk.sebsa.blackfur.editor.EditorUtil;
 import dk.sebsa.blackfur.gui.Font;
 import dk.sebsa.blackfur.gui.GUISkin;
 import dk.sebsa.blackfur.gui.Sprite;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,7 +30,8 @@ public class AssetDatabase {
 	private static List<String> materials = new ArrayList<String>();
 	private static List<String> sprites = new ArrayList<String>();
 	private static List<String> skins = new ArrayList<String>();
-	
+	private static List<String> scripts = new ArrayList<String>();
+	private static int i = 0;
 	public static void loadAllResources() throws IOException {
 		int i = 0;
 		initResourcePaths();
@@ -38,6 +42,8 @@ public class AssetDatabase {
 		for(i = 0; i < materials.size(); i++) new Material(materials.get(i));
 		for(i = 0; i < sprites.size(); i++) new Sprite(sprites.get(i));
 		for(i = 0; i < skins.size(); i++) new GUISkin(skins.get(i));
+		
+		for(i = 0; i < scripts.size(); i++) EditorUtil.importCompoenent(scripts.get(i));
 	}
 
 	private static void initResourcePaths() {
@@ -83,6 +89,9 @@ public class AssetDatabase {
 		materials = importFromLocalDir("Materials", 0);
 		sprites = importFromLocalDir("Sprites", 0);
 		skins = importFromLocalDir("Skins", 0);
+		
+		// Load project stuff
+		scripts = importFromExternalDir("Scripts", 1);
 	}
 
 	private static List<String> importFromLocalDir(String path, int useExt) throws IOException {
@@ -100,6 +109,19 @@ public class AssetDatabase {
 		
 		in.close();
 		br.close();
+		return paths;
+	}
+	
+	private static List<String> importFromExternalDir(String path, int useExt) {
+		List<String> paths = new ArrayList<String>();
+		File dir = new File(Editor.getProjectDir() + path);
+		File[] files = dir.listFiles();
+		for(i = 0; i < files.length; i ++) {
+			String aPath = files[i].getAbsolutePath();
+			if(aPath.endsWith("/")) continue;
+			if(useExt == 0) aPath = aPath.split("\\.")[0];
+			paths.add(aPath);
+		}
 		return paths;
 	}
 }
