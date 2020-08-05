@@ -10,12 +10,14 @@ import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import dk.sebsa.blackfur.engine.Texture;
 import dk.sebsa.blackfur.math.Vector2f;
@@ -36,16 +38,21 @@ public class Font {
 	
 	@SuppressWarnings("resource")
 	public Font(String name, float size) {		
-		try {
-			font = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, Font.class.getResourceAsStream("/Font/" + name + ".ttf")).deriveFont(size);
-		} catch (FontFormatException e) { e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); }
-		
-		//try {
-		//	font = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("res/Font/"+name+".ttf")).deriveFont(size);
-		//} catch (FontFormatException e) { e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); }
+		if(name.startsWith("/")) {
+			try {
+				font = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, Font.class.getResourceAsStream("/Font" + name + ".ttf")).deriveFont(size);
+				name = name.replaceFirst("/", "");
+			} catch (FontFormatException e) { e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); }
+		} else {
+			try {
+				font = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File(name + ".ttf")).deriveFont(size);
+				String[] split = name.replaceAll(Pattern.quote("\\"), "\\\\").split("\\\\");
+				name = split[split.length - 1];
+			} catch (FontFormatException e) { e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); }
+		}
+		this.name = name;
 		
 		generateFont();
-		this.name = name;
 		fonts.add(this);
 	}
 	

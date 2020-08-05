@@ -3,8 +3,10 @@ package dk.sebsa.blackfur.engine;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
+import static org.lwjgl.stb.STBImage.stbi_load;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.lwjgl.BufferUtils;
 
@@ -36,24 +38,31 @@ public class Texture {
 		IntBuffer channelsBuffer = BufferUtils.createIntBuffer(1);
 		
 		// Load texture
-		//ByteBuffer dataBuffer = stbi_load("./res/Textures/"+filename, widthBuffer, heightBuffer, channelsBuffer, 4);
 		
-		InputStream is = Texture.class.getResourceAsStream("/Textures/" + name);
-		byte[] bytes = new byte[8000];
-		int curByte = 0;
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		
-		try {
-			while((curByte = is.read(bytes)) != -1) { bos.write(bytes, 0, curByte);}
-			is.close();
+		ByteBuffer data;
+		if(filename.startsWith("/")) {
+			name = filename.replaceFirst("/", "");
+			
+			InputStream is = Texture.class.getResourceAsStream("/Textures/" + name);
+			byte[] bytes = new byte[8000];
+			int curByte = 0;
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			
+			try {
+				while((curByte = is.read(bytes)) != -1) { bos.write(bytes, 0, curByte);}
+				is.close();
+			}
+			catch (IOException e) { e.printStackTrace(); }
+			
+			bytes = bos.toByteArray();
+			ByteBuffer buffer = (ByteBuffer) BufferUtils.createByteBuffer(bytes.length);
+			buffer.put(bytes).flip();
+			data = stbi_load_from_memory(buffer, widthBuffer, heightBuffer, channelsBuffer, 4);
+		} else {
+			String[] split = filename.replaceAll(Pattern.quote("\\"), "\\\\").split("\\\\");
+			name = split[split.length -1];
+			data = stbi_load(filename, widthBuffer, heightBuffer, channelsBuffer, 4);
 		}
-		catch (IOException e) { e.printStackTrace(); }
-		
-		bytes = bos.toByteArray();
-		ByteBuffer buffer = (ByteBuffer) BufferUtils.createByteBuffer(bytes.length);
-		buffer.put(bytes).flip();
-		ByteBuffer data = stbi_load_from_memory(buffer, widthBuffer, heightBuffer, channelsBuffer, 4);
-				
 		id = glGenTextures();
 		width = widthBuffer.get();
 		height = heightBuffer.get();

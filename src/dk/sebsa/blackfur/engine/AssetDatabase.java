@@ -92,6 +92,13 @@ public class AssetDatabase {
 		
 		// Load project stuff
 		scripts = importFromExternalDir("Scripts", 1);
+		
+		textures.addAll(importFromExternalDir("Textures", 1));
+		fonts.addAll(importFromExternalDir("Font", 0));
+		shaders.addAll(importFromExternalDir("Shaders", 0));
+		materials.addAll(importFromExternalDir("Materials", 0));
+		sprites.addAll(importFromExternalDir("Sprites", 0));
+		skins.addAll(importFromExternalDir("Skins", 0));
 	}
 
 	private static List<String> importFromLocalDir(String path, int useExt) throws IOException {
@@ -102,9 +109,9 @@ public class AssetDatabase {
 		
 		while((line = br.readLine()) != null) {
 			if(useExt == 1)
-				paths.add(line);
+				paths.add("/" + line);
 			else
-				paths.add(line.split("\\.")[0]);
+				paths.add("/" + line.split("\\.")[0]);
 		}
 		
 		in.close();

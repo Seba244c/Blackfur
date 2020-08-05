@@ -1,10 +1,13 @@
 package dk.sebsa.blackfur.engine;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import dk.sebsa.blackfur.math.Color;
 
@@ -25,16 +28,20 @@ public class Material {
 		materials.add(this);
 	}
 	
+	@SuppressWarnings("resource")
 	public Material(String name) {
 		BufferedReader br;
 	
 		try {
-			//br = new BufferedReader(new FileReader(new File("./res/Materials/"+name+".mat")));
-			InputStreamReader isr =  new InputStreamReader(Material.class.getResourceAsStream("/Materials/" + name + ".bfm"));
-			br = new BufferedReader(isr);
-			
-			// Get name
-			this.name = name;
+			if(name.startsWith("/")) {
+				InputStreamReader isr =  new InputStreamReader(Material.class.getResourceAsStream("/Materials" + name + ".bfm"));
+				br = new BufferedReader(isr);
+				this.name = name.replaceFirst("/", "");
+			} else {
+				br = new BufferedReader(new FileReader(new File(name+".bfm")));
+				String[] split = name.replaceAll(Pattern.quote("\\"), "\\\\").split("\\\\");
+				this.name = split[split.length - 1];
+			}
 			
 			// Get texture
 			texture = Texture.findTexture(br.readLine().split(" ")[1]);	

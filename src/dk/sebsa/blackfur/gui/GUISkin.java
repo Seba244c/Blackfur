@@ -1,11 +1,14 @@
 package dk.sebsa.blackfur.gui;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import dk.sebsa.blackfur.engine.Rect;
 import dk.sebsa.blackfur.engine.Texture;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -17,12 +20,20 @@ public class GUISkin {
 	public Texture texture;
 	private int i;
 	
+	@SuppressWarnings("resource")
 	public GUISkin(String name) {
 		BufferedReader br;
 	
 		try {
-			InputStreamReader isr =  new InputStreamReader(GUISkin.class.getResourceAsStream("/Skins/" + name + ".bfo"));
-			br = new BufferedReader(isr);
+			if(name.startsWith("/")) {
+				InputStreamReader isr =  new InputStreamReader(GUISkin.class.getResourceAsStream("/Skins" + name + ".bfo"));
+				br = new BufferedReader(isr);
+				this.name = name.replaceFirst("/", "");
+			} else {
+				br = new BufferedReader(new FileReader(new File(name + ".bfo")));
+				String[] split = name.replaceAll(Pattern.quote("\\"), "\\\\").split("\\\\");
+				this.name = split[split.length - 1];
+			}
 			
 			texture = Texture.findTexture(br.readLine().split(" ")[1]);
 			
@@ -41,7 +52,6 @@ public class GUISkin {
 			}
 			
 			br.close();
-			this.name = name;
 			skins.add(this);
 		} catch (IOException e) {
 			e.printStackTrace();

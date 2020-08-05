@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import dk.sebsa.blackfur.engine.Material;
 import dk.sebsa.blackfur.engine.Rect;
+import java.io.FileReader;
+import java.io.File;
 
 public class Sprite {
 	public String name;
@@ -26,16 +29,20 @@ public class Sprite {
 		sprites.add(this);
 	}
 	
+	@SuppressWarnings("resource")
 	public Sprite(String name) {
 		BufferedReader br;
 		
 		try {
-			//br = new BufferedReader(new FileReader(new File("./res/Sprites/"+name+".spr")));
-			InputStreamReader isr =  new InputStreamReader(Sprite.class.getResourceAsStream("/Sprites/" + name + ".bfs"));
-			br = new BufferedReader(isr);
-			
-			// Get name
-			this.name = name;
+			if(name.startsWith("/")) {
+				InputStreamReader isr =  new InputStreamReader(Sprite.class.getResourceAsStream("/Sprites" + name + ".bfs"));
+				br = new BufferedReader(isr);
+				this.name = name.replaceFirst("/", "");
+			} else {
+				br = new BufferedReader(new FileReader(new File(name+".bfs")));
+				String[] split = name.replaceAll(Pattern.quote("\\"), "\\\\").split("\\\\");
+				this.name = split[split.length - 1];
+			}
 			
 			// Get material
 			material = Material.getMat(br.readLine().split(" ")[1]);	

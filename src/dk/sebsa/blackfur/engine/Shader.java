@@ -3,11 +3,14 @@ package dk.sebsa.blackfur.engine;
 import static org.lwjgl.opengl.GL20.*;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.lwjgl.BufferUtils;
 
@@ -28,9 +31,7 @@ public class Shader {
 	
 	private Color boundColor = Color.transparent();
 	
-	public Shader(String fileName) throws IOException {
-		name = fileName;
-		
+	public Shader(String fileName) throws IOException {		
 		// Program
 		program = glCreateProgram();
 		if (program == 0)
@@ -82,16 +83,26 @@ public class Shader {
 		shaders.add(this);
 	}
 	
+	@SuppressWarnings("resource")
 	private String[] createShader(String fileName) {
 		StringBuilder stringBuilder = new StringBuilder();
 		BufferedReader bufferedReader;
 		try {
-			bufferedReader = new BufferedReader(new InputStreamReader(Shader.class.getResourceAsStream("/Shaders/" + fileName + ".glsl")));
+			if(fileName.startsWith("/")) {
+				bufferedReader = new BufferedReader(new InputStreamReader(Shader.class.getResourceAsStream("/Shaders" + fileName + ".glsl")));
+				name = fileName.replaceFirst("/", "");
+			} else {
+				bufferedReader = new BufferedReader(new FileReader(new File(fileName + ".glsl")));
+				String[] split = fileName.replaceAll(Pattern.quote("\\"), "\\\\").split("\\\\");
+				name = split[split.length - 1];
+			}
+			
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				stringBuilder.append(line);
 				stringBuilder.append("\n");
 			}
+			
 			bufferedReader.close();
 		} catch (Exception e) {
 			e.printStackTrace();
