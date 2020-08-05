@@ -12,7 +12,6 @@ import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 
 import dk.sebsa.blackfur.engine.Application;
-import dk.sebsa.blackfur.math.Convert;
 import dk.sebsa.blackfur.math.Vector2f;
 
 enum CoursorImage{Pointer, Hand, HScroll, VScroll}
@@ -41,13 +40,13 @@ public class Input {
 	
 	public Input() {
 		// Bool to byte
-		keys = Convert.keys;
-		keysPressed = Convert.keys.clone();
-		keysReleased = Convert.keys.clone();
-		buttons = Convert.buttons.clone();
-		buttonsPressed = Convert.buttons.clone();
-		buttonsReleased = Convert.buttons.clone();
-		
+		keys = new byte[GLFW.GLFW_KEY_LAST];
+		keysPressed = new byte[GLFW.GLFW_KEY_LAST];
+		keysReleased = new byte[GLFW.GLFW_KEY_LAST];
+		buttons = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
+		buttonsPressed = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
+		buttonsReleased = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
+
 		displVec = new Vector2f();
 		position = new Vector2f();
 		this.window = Application.getWindow();
@@ -101,27 +100,32 @@ public class Input {
 	}
 	
 	public boolean isKeyDown(int key) {
-		System.out.println(keys[key]);
+		if(key < 0 || key > GLFW.GLFW_KEY_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
 		return keys[key] == 1;
 	}
 	
 	public boolean isKeyPressed(int key) {
+		if(key < 0 || key > GLFW.GLFW_KEY_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
 		return keysPressed[key] == 1;
 	}
 	
 	public boolean isKeyReleased(int key) {
+		if(key < 0 || key > GLFW.GLFW_KEY_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
 		return keysReleased[key] == 1;
 	}
 	
 	public boolean isButtonDown(int button) {
+		if(button < 0 || button > GLFW.GLFW_MOUSE_BUTTON_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
 		return buttons[button] == 1;
 	}
 	
 	public boolean isButtonPressed(int button) {
+		if(button < 0 || button > GLFW.GLFW_MOUSE_BUTTON_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
 		return buttonsPressed[button] == 1;
 	}
 	
 	public boolean isButtonReleased(int button) {
+		if(button < 0 || button > GLFW.GLFW_MOUSE_BUTTON_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
 		return buttonsReleased[button] == 1;
 	}
 	
@@ -182,10 +186,10 @@ public class Input {
 	}
 	
 	public void late() {
-		keysPressed = Convert.keys.clone();
-		keysReleased = Convert.keys.clone();
-		buttonsPressed = Convert.buttons.clone();
-		buttonsReleased = Convert.buttons.clone();
+		keysPressed = new byte[GLFW.GLFW_KEY_LAST];
+		keysReleased = new byte[GLFW.GLFW_KEY_LAST];
+		buttonsPressed = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
+		buttonsReleased = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
 	}
 	
 	public void centerCursor() {

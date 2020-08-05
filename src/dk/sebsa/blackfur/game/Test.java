@@ -1,5 +1,8 @@
 package dk.sebsa.blackfur.game;
 
+import org.lwjgl.glfw.GLFW;
+
+import dk.sebsa.blackfur.engine.Application;
 import dk.sebsa.blackfur.engine.Component;
 import dk.sebsa.blackfur.engine.Time;
 
@@ -9,6 +12,9 @@ public class Test extends Component {
 	public float flota = 1.48f;
 	
 	public void update() {
-		entity.setRotation(entity.getRotation() + (Time.getDeltaTime() * 10));
+		if(Application.input.isKeyDown(GLFW.GLFW_KEY_SPACE))
+			entity.setRotation(entity.getRotation() + (Time.getDeltaTime() * 20));
+		else if(Application.input.isKeyDown(GLFW.GLFW_KEY_ENTER))
+			entity.setRotation(entity.getRotation() - (Time.getDeltaTime() * 20));
 	}
 }
