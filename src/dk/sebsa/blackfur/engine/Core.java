@@ -52,7 +52,7 @@ public class Core {
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			
 			while(!glfwWindowShouldClose(window)) {
-				// Poll events
+				Application.input.late();
 				glfwPollEvents();
 				
 				if(!Application.isMinemiszed()) {
@@ -61,7 +61,7 @@ public class Core {
 					Application.input.update();
 					Application.resized = false;
 					Time.process();
-					
+										
 					// run component methods
 					Entity.prepareEntities();
 					
@@ -82,9 +82,6 @@ public class Core {
 					GUI.drawPopup();
 					
 					GUI.unbind();
-					
-					// End frame
-					Application.input.late();
 				}
 				glfwSwapBuffers(window);
 			}

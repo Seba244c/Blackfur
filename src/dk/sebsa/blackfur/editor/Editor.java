@@ -110,8 +110,8 @@ public class Editor {
 		
 		if(playing == 0) {
 			// Render editor
-			GUI.window(new Rect(0, 30, 400, Application.getHeight() - 60), "Hierarchy", hierarchy::render, windowStyle);
-			GUI.window(new Rect(Application.getWidth()-400, 30, 400, Application.getHeight() - 60), "Inspector", inspector::render, windowStyle);
+			GUI.window(new Rect(0, 30, 400, Application.getHeight() - 260), "Hierarchy", hierarchy::render, windowStyle);
+			GUI.window(new Rect(Application.getWidth()-400, 30, 400, Application.getHeight() - 260), "Inspector", inspector::render, windowStyle);
 			GUI.window(new Rect(0, Application.getHeight() - 230, 400, 200), "Asset Types", projectPanel::renderTypes, windowStyle);
 			GUI.window(new Rect(400, Application.getHeight() - 230, Application.getWidth() - 400, 200), "Assets", projectPanel::renderAssets, windowStyle);
 		}

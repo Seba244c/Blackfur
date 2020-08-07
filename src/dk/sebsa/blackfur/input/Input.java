@@ -12,6 +12,7 @@ import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 
 import dk.sebsa.blackfur.engine.Application;
+import dk.sebsa.blackfur.engine.Time;
 import dk.sebsa.blackfur.math.Vector2f;
 
 enum CoursorImage{Pointer, Hand, HScroll, VScroll}
@@ -22,12 +23,16 @@ public class Input {
 	private byte[] buttons;
 	private byte[] buttonsPressed;
 	private byte[] buttonsReleased;
+	
+	private float lastDown = 0;
+	private byte doubleClick = 0;
+	
 	private double mouseX;
 	private double mouseY;
 	private double prevMouseX;
 	private double prevMouseY;
-	private double scrollX;
-	private double scrollY;
+	private int scrollX;
+	private int scrollY;
 	private final Vector2f displVec;
 	private byte inWindow = 0;
 	private final long window;
@@ -77,8 +82,9 @@ public class Input {
 				buttons[button] = (byte)(action != GLFW.GLFW_RELEASE?1:0);
 				if(action == 1) {
 					buttonsPressed[button] = 1;
-				}
-				if(action == 0) {
+					if(lastDown < 0.3f) doubleClick = 1;
+					lastDown = 0;
+				} else if(action == 0) {
 					buttonsReleased[button] = 1;
 				}
 			}
@@ -129,6 +135,10 @@ public class Input {
 		return buttonsReleased[button] == 1;
 	}
 	
+	public final boolean mouseMultiClicked() {
+		return doubleClick == 1;
+	}
+	
 	public void cleanup(long windowId) {
 		glfwFreeCallbacks(windowId);
 	}
@@ -141,11 +151,11 @@ public class Input {
 		return mouseY;
 	}
 	
-	public double getScrollX() {
+	public int getScrollX() {
 		return scrollX;
 	}
 
-	public double getScrollY() {
+	public int getScrollY() {
 		return scrollY;
 	}
 
@@ -190,6 +200,10 @@ public class Input {
 		keysReleased = new byte[GLFW.GLFW_KEY_LAST];
 		buttonsPressed = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
 		buttonsReleased = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
+		scrollY = 0;
+		scrollX = 0;
+		lastDown += Time.getUnscaledDelta();
+		doubleClick = 0;
 	}
 	
 	public void centerCursor() {

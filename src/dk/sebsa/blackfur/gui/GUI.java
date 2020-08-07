@@ -26,6 +26,7 @@ public class GUI {
 	private static Matrix4x4 ortho;
 	private static Mesh mesh;
 	private static Shader shader;
+	private static Popup popup;
 	
 	private static int i;
 	private static char[] c;
@@ -33,9 +34,8 @@ public class GUI {
 	private static float tempX;
 	public static GUISkin skin;
 	
-	private static Rect area = new Rect(0, 0, Application.getWidth(), Application.getHeight());
-	private static List<Rect> areas = new ArrayList<Rect>();
-	private static Popup popup;
+	private static List<GUIArea> areas = new ArrayList<GUIArea>();
+	private static int area = 0;
 	
 	public static void init() throws IOException {
 		skin = GUISkin.getSkin("DefaultGUI");
@@ -52,8 +52,9 @@ public class GUI {
 	public static void prepare() {
 		// Clear ares
 		areas.clear();
-		areas.add(Application.getRect());
-		area = areas.get(areas.size()-1);
+		areas.add(new GUIArea(Application.getRect()));
+		area = 0;
+		
 		// Disable 3d
 		glDisable(GL_DEPTH_TEST);
 		
@@ -154,7 +155,9 @@ public class GUI {
 	
 	private static int button(String text, Rect r, GUIStyle normalStyle, GUIStyle hoverStyle) {
 		Rect rf = r.copy();
-		rf.addPosition(area); 
+		GUIArea a = areas.get(area);
+		rf.addPosition(a.area); 
+		rf.y -= a.getScroll();
 		
 		if(rf.inRect(Application.input.getMousePosition())) {
 			Rect p = box(r, hoverStyle);
@@ -179,7 +182,9 @@ public class GUI {
 	
 	public static int centeredButton(String text, Rect r, GUIStyle normalStyle, GUIStyle hoverStyle) {
 		Rect rf = r.copy();
-		rf.addPosition(area); 
+		GUIArea a = areas.get(area);
+		rf.addPosition(a.area); 
+		rf.y -= a.getScroll();
 		
 		float x = rf.x + ((rf.width / 2f) - ((float) font.getStringWidth(text) / 2f));
 		float y = rf.y + ((rf.height / 2f) - (font.getFontHeight() / 2f));
@@ -300,12 +305,14 @@ public class GUI {
 	}
 	
 	public static void drawTextureWithTextCoords(Texture tex, Rect drawRect, Rect uvRect, Color c) {
-		if(area == null) return;
-		Rect r = area.getIntersection(new Rect(drawRect.x + area.x, drawRect.y + area.y, drawRect.width, drawRect.height));
-		if(r==null) return;
+		GUIArea a = areas.get(area);
+		if(a.area == null) return;
+		Rect r = a.area.getIntersection(new Rect(drawRect.x + a.area.x, (drawRect.y + a.area.y) - a.getScroll(), drawRect.width, drawRect.height));
 		
-		float x = uvRect.x + ((((r.x - drawRect.x) - area.x) / drawRect.width) * uvRect.width);
-		float y = uvRect.y + ((((r.y - drawRect.y) - area.y) / drawRect.height) * uvRect.height);
+		if(r == null) return;
+		
+		float x = uvRect.x + ((((r.x - drawRect.x) - a.area.x) / drawRect.width) * uvRect.width);
+		float y = uvRect.y + ((((r.y - drawRect.y) - (a.area.y - a.getScroll())) / drawRect.height) * uvRect.height);
 		Rect u = new Rect(x, y, (r.width / drawRect.width) * uvRect.width, (r.height / drawRect.height) * uvRect.height);
 		
 		tex.bind();
@@ -342,9 +349,16 @@ public class GUI {
 		endArea();
 	}
 	
+	public static int setScrollView(int scrollHeight, int offset) {
+		GUIArea a = areas.get(area);
+		a.scrollHeight = scrollHeight;
+		return a.scroll(offset);
+	}
+	
 	public static void beginArea(Rect r) {
-		areas.add(area.getIntersection(new Rect(area.x + r.x, area.y + r.y, r.width, r.height)));
-		area = areas.get(areas.size()-1);
+		GUIArea a = areas.get(area);
+		areas.add(new GUIArea(a.area.getIntersection(new Rect(a.area.x + r.x, (a.area.y + r.y) - a.getScroll(), r.width, r.height))));
+		area = areas.size()-1;
 	}
 	
 	public static void endArea() {
@@ -352,6 +366,6 @@ public class GUI {
 			return;
 		
 		areas.remove(areas.size()-1);
-		area = areas.get(areas.size()-1);
+		area = areas.size()-1;
 	}
  }

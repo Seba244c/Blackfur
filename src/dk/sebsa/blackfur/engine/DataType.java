@@ -7,6 +7,8 @@ public enum DataType
 	Shader,
 	Skin,
 	Sprite,
-	Texture
+	Texture,
+	Script,
+	Scene
 }
 

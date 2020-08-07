@@ -19,6 +19,7 @@ public class Inspector {
 	private int i = 0;
 	private int offsetY = 0;
 	public GUIStyle windowStyle;
+	private int scroll = 0;
 	
 	public Inspector() {
 		windowStyle = Editor.skin.getStyle("Window");
@@ -29,6 +30,12 @@ public class Inspector {
 		if(inspected == null) return;
 		
 		if(inspected instanceof Entity) {
+			int addition = 122;
+			for(i = 0; i < ca.size(); i++) {
+				addition += ca.get(i).height + (windowStyle.padding.y + windowStyle.padding.height) + 2;
+			}
+			scroll = GUI.setScrollView(addition, scroll);
+			
 			// Get Selected
 			Entity selected = (Entity) inspected;
 			//if(selected == null) return;
@@ -166,6 +173,7 @@ public class Inspector {
 	}
 	
 	public void setAttributes(Object o) {
+		scroll = 0;
 		ca.clear();
 		if(o instanceof Entity) {
 			List<Component> c = ((Entity) o).getComponents();

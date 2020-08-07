@@ -14,6 +14,7 @@ public class Debug {
 	public static void log(int i) { log(String.valueOf(i)); }
 	public static void log(boolean b) { log(String.valueOf(b)); }
 	public static void log(float f) { log(String.valueOf(f)); }
+	public static void log(double d) { log(String.valueOf(d)); }
 	public static void log(String message) {
 		addMessage(message);
 	}
