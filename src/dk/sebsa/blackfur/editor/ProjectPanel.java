@@ -66,8 +66,8 @@ public class ProjectPanel
 			{
 				if(selected != null)
 				{
-					if(fonts.get(i).equals(selected))
-					{
+					if(new Rect(0, i * 26, r.width, 26).add(r).inRect(Application.input.getMousePosition())) {
+
 						// Open file i Double clicked
 						if(Application.input.mouseMultiClicked()) {
 							File f = new File(Editor.getProjectDir() + "Font/" + fonts.get(i).getName() + ".ttf");
@@ -75,8 +75,13 @@ public class ProjectPanel
 								try { Desktop.getDesktop().open(f); } catch (IOException e) {e.printStackTrace(); }
 							}
 						}
+					}
+					if(fonts.get(i).equals(selected))
+					{
 						// Button
-						if(GUI.buttonReleased(fonts.get(i).getName(), new Rect(0, i * 26, r.width, 26), box, box)) Editor.setSelectedAsset((Object) fonts.get(i));
+						if(GUI.buttonPressed(fonts.get(i).getName(), new Rect(0, i * 26, r.width, 26), box, box)) {
+							Editor.setSelectedAsset((Object) fonts.get(i));
+						}
 					}
 					else if(GUI.buttonReleased(fonts.get(i).getName(), new Rect(0, i * 26, r.width, 26), empty, empty)) Editor.setSelectedAsset((Object) fonts.get(i));
 				}
@@ -93,15 +98,20 @@ public class ProjectPanel
 				{
 					if(materials.get(i).equals(selected))
 					{
-						// Open file i Double clicked
-						if(Application.input.mouseMultiClicked()) {
-							File f = new File(Editor.getProjectDir() + "Materials/" + materials.get(i).name + ".bfm");
-							if(f.exists()) {
-								try { Desktop.getDesktop().open(f); } catch (IOException e) {e.printStackTrace(); }
+						if(new Rect(0, i * 26, r.width, 26).add(r).inRect(Application.input.getMousePosition())) {
+
+							// Open file i Double clicked
+							if(Application.input.mouseMultiClicked()) {
+								File f = new File(Editor.getProjectDir() + "Materials/" + materials.get(i).name + ".bfm");
+								if(f.exists()) {
+									try { Desktop.getDesktop().open(f); } catch (IOException e) {e.printStackTrace(); }
+								}
 							}
 						}
 						// Button
-						if(GUI.buttonReleased(materials.get(i).name, new Rect(0, i * 26, r.width, 26), box, box)) Editor.setSelectedAsset((Object) materials.get(i));
+						if(GUI.buttonPressed(materials.get(i).name, new Rect(0, i * 26, r.width, 26), box, box)) {
+							Editor.setSelectedAsset((Object) materials.get(i));
+						}
 					}
 					else if(GUI.buttonReleased(materials.get(i).name, new Rect(0, i * 26, r.width, 26), empty, empty)) Editor.setSelectedAsset((Object) materials.get(i));
 				}
@@ -118,15 +128,20 @@ public class ProjectPanel
 				{
 					if(shaders.get(i).equals(selected))
 					{
-						// Open file i Double clicked
-						if(Application.input.mouseMultiClicked()) {
-							File f = new File(Editor.getProjectDir() + "Shaders/" + shaders.get(i).name + ".glsl");
-							if(f.exists()) {
-								try { Desktop.getDesktop().open(f); } catch (IOException e) {e.printStackTrace(); }
+						if(new Rect(0, i * 26, r.width, 26).add(r).inRect(Application.input.getMousePosition())) {
+
+							// Open file i Double clicked
+							if(Application.input.mouseMultiClicked()) {
+								File f = new File(Editor.getProjectDir() + "Shaders/" + shaders.get(i).name + ".glsl");
+								if(f.exists()) {
+									try { Desktop.getDesktop().open(f); } catch (IOException e) {e.printStackTrace(); }
+								}
 							}
 						}
 						// Button
-						if(GUI.buttonReleased(shaders.get(i).name, new Rect(0, i * 26, r.width, 26), box, box)) Editor.setSelectedAsset((Object) shaders.get(i));
+						if(GUI.buttonPressed(shaders.get(i).name, new Rect(0, i * 26, r.width, 26), box, box)) {
+							Editor.setSelectedAsset((Object) shaders.get(i));
+						}
 					}
 					else if(GUI.buttonReleased(shaders.get(i).name, new Rect(0, i * 26, r.width, 26), empty, empty)) Editor.setSelectedAsset((Object) shaders.get(i));
 				}
@@ -143,15 +158,20 @@ public class ProjectPanel
 				{
 					if(skins.get(i).equals(selected))
 					{
-						// Open file i Double clicked
-						if(Application.input.mouseMultiClicked()) {
-							File f = new File(Editor.getProjectDir() + "Skins/" + skins.get(i).getName() + ".bfo");
-							if(f.exists()) {
-								try { Desktop.getDesktop().open(f); } catch (IOException e) {e.printStackTrace(); }
+						if(new Rect(0, i * 26, r.width, 26).add(r).inRect(Application.input.getMousePosition())) {
+
+							// Open file i Double clicked
+							if(Application.input.mouseMultiClicked()) {
+								File f = new File(Editor.getProjectDir() + "Skins/" + skins.get(i).getName() + ".bfo");
+								if(f.exists()) {
+									try { Desktop.getDesktop().open(f); } catch (IOException e) {e.printStackTrace(); }
+								}
 							}
 						}
 						// Button
-						if(GUI.buttonReleased(skins.get(i).getName(), new Rect(0, i * 26, r.width, 26), box, box)) Editor.setSelectedAsset((Object) skins.get(i));
+						if(GUI.buttonPressed(skins.get(i).getName(), new Rect(0, i * 26, r.width, 26), box, box)) {
+							Editor.setSelectedAsset((Object) skins.get(i));
+						}
 					}
 					else if(GUI.buttonReleased(skins.get(i).getName(), new Rect(0, i * 26, r.width, 26), empty, empty)) Editor.setSelectedAsset((Object) skins.get(i));
 				}
@@ -168,15 +188,21 @@ public class ProjectPanel
 				{
 					if(sprites.get(i).equals(selected))
 					{
-						// Open file i Double clicked
-						if(Application.input.mouseMultiClicked()) {
-							File f = new File(Editor.getProjectDir() + "Sprites/" + sprites.get(i).name + ".bfs");
-							if(f.exists()) {
-								try { Desktop.getDesktop().open(f); } catch (IOException e) {e.printStackTrace(); }
+						if(new Rect(0, i * 26, r.width, 26).add(r).inRect(Application.input.getMousePosition())) {
+
+							// Open file i Double clicked
+							if(Application.input.mouseMultiClicked()) {
+								
+								File f = new File(Editor.getProjectDir() + "Sprites/" + sprites.get(i).name + ".bfs");
+								if(f.exists()) {
+									try { Desktop.getDesktop().open(f); } catch (IOException e) {e.printStackTrace(); }
+								}
 							}
 						}
 						// Button
-						if(GUI.buttonReleased(sprites.get(i).name, new Rect(0, i * 26, r.width, 26), box, box)) Editor.setSelectedAsset((Object) sprites.get(i));
+						if(GUI.buttonPressed(sprites.get(i).name, new Rect(0, i * 26, r.width, 26), box, box)) {
+							Editor.setSelectedAsset((Object) sprites.get(i));
+						}
 					}
 					else if(GUI.buttonReleased(sprites.get(i).name, new Rect(0, i * 26, r.width, 26), empty, empty)) Editor.setSelectedAsset((Object) sprites.get(i));
 				}
@@ -192,16 +218,21 @@ public class ProjectPanel
 				if(selected != null)
 				{
 					if(textures.get(i).equals(selected))
-					{	
-						// Open file i Double clicked
-						if(Application.input.mouseMultiClicked()) {
-							File f = new File(Editor.getProjectDir() + "Textures/" + textures.get(i).getName());
-							if(f.exists()) {
-								try { Desktop.getDesktop().open(f); } catch (IOException e) {e.printStackTrace(); }
+					{
+						if(new Rect(0, i * 26, r.width, 26).add(r).inRect(Application.input.getMousePosition())) {
+							
+							// Open file i Double clicked
+							if(Application.input.mouseMultiClicked()) {
+								File f = new File(Editor.getProjectDir() + "Textures/" + textures.get(i).getName());
+								if(f.exists()) {
+									try { Desktop.getDesktop().open(f); } catch (IOException e) {e.printStackTrace(); }
+								}
 							}
 						}
 						// Button
-						if(GUI.buttonReleased(textures.get(i).getName(), new Rect(0, i * 26, r.width, 26), box, box)) Editor.setSelectedAsset((Object) textures.get(i));
+						if(GUI.buttonPressed(textures.get(i).getName(), new Rect(0, i * 26, r.width, 26), box, box)) {
+							Editor.setSelectedAsset((Object) textures.get(i));
+						}
 					}
 					else if(GUI.buttonReleased(textures.get(i).getName(), new Rect(0, i * 26, r.width, 26), empty, empty)) Editor.setSelectedAsset((Object) textures.get(i));
 				}

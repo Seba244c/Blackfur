@@ -21,6 +21,9 @@ public class Sprite {
 	private static List<Sprite> sprites = new ArrayList<Sprite>();
 	private static int i;
 	
+	private File f = null;
+	private long lastModified;
+	
 	public Sprite(String n, Material m, Rect offset, Rect padding) {
 		name = n;
 		material = m;
@@ -39,7 +42,9 @@ public class Sprite {
 				br = new BufferedReader(isr);
 				this.name = name.replaceFirst("/", "");
 			} else {
-				br = new BufferedReader(new FileReader(new File(name+".bfs")));
+				f = new File(name + ".bfs"); lastModified = f.lastModified();
+				
+				br = new BufferedReader(new FileReader(f));
 				String[] split = name.replaceAll(Pattern.quote("\\"), "\\\\").split("\\\\");
 				this.name = split[split.length - 1];
 			}
@@ -81,5 +86,39 @@ public class Sprite {
 
 	public static List<Sprite> getSprites() {
 		return sprites;
+	}
+	
+	public static void refreshAll() {
+		for(i = 0; i < sprites.size(); i++) {
+			try {
+				sprites.get(i).refresh();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void refresh() throws IOException {
+		if(f==null) return;
+		File temp = new File(f.getAbsolutePath());
+		if(!temp.exists()) return;
+		
+		if(temp.lastModified() == lastModified) return;
+		f = temp;
+		lastModified = f.lastModified();
+		
+		BufferedReader br = new BufferedReader(new FileReader(f));
+		
+		material = Material.getMat(br.readLine().split(" ")[1]);	
+		
+		// Get offset
+		String[] o = br.readLine().split(" ")[1].split(",");
+		offset = new Rect(Float.parseFloat(o[0]), Float.parseFloat(o[1]), Float.parseFloat(o[2]), Float.parseFloat(o[3]));
+		
+		// Get padding
+		String[] p = br.readLine().split(" ")[1].split(",");
+		padding = new Rect(Float.parseFloat(p[0]), Float.parseFloat(p[1]), Float.parseFloat(p[2]), Float.parseFloat(p[3]));
+
+		br.close();
 	}
 }

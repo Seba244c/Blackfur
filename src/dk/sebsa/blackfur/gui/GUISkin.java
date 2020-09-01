@@ -20,6 +20,9 @@ public class GUISkin {
 	public Texture texture;
 	private int i;
 	
+	private File f = null;
+	private long lastModified;
+	
 	@SuppressWarnings("resource")
 	public GUISkin(String name) {
 		BufferedReader br;
@@ -30,7 +33,8 @@ public class GUISkin {
 				br = new BufferedReader(isr);
 				this.name = name.replaceFirst("/", "");
 			} else {
-				br = new BufferedReader(new FileReader(new File(name + ".bfo")));
+				f = new File(name + ".bfo"); lastModified = f.lastModified();
+				br = new BufferedReader(new FileReader(f));
 				String[] split = name.replaceAll(Pattern.quote("\\"), "\\\\").split("\\\\");
 				this.name = split[split.length - 1];
 			}
@@ -77,4 +81,51 @@ public class GUISkin {
 	}
 	
 	public final String getName() { return name; }
+
+	public static void refreshAll() {
+		for(int i = 0; i < skins.size(); i++) {
+			try {
+				skins.get(i).refresh();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void refresh() throws IOException {
+		if(f==null) return;
+		File temp = new File(f.getAbsolutePath());
+		if(!temp.exists()) return;
+		
+		if(temp.lastModified() == lastModified) return;
+		f = temp;
+		lastModified = f.lastModified();
+		
+		BufferedReader br = new BufferedReader(new FileReader(f));
+		
+		texture = Texture.findTexture(br.readLine().split(" ")[1]);
+		
+		String line = br.readLine();
+		while(line!=null) {
+			if(line.startsWith("Name:")) {
+				String[] o = br.readLine().split(" ")[1].split(",");
+				String[] p = br.readLine().split(" ")[1].split(",");
+				
+				Rect offset = new Rect(Float.parseFloat(o[0]), Float.parseFloat(o[1]), Float.parseFloat(o[2]), Float.parseFloat(o[3]));
+				Rect padding = new Rect(Float.parseFloat(p[0]), Float.parseFloat(p[1]), Float.parseFloat(p[2]), Float.parseFloat(p[3]));
+				String styleName = line.split(" ")[1];
+				GUIStyle style = getStyle(styleName);
+				if(style != null) {
+					style.offset = offset;
+					style.padding = padding;
+				} else {
+					style = new GUIStyle(line.split(" ")[1], texture, offset, padding);
+					styles.add(style);
+				}
+			}
+			line = br.readLine();
+		}
+		
+		br.close();
+	}
 }

@@ -20,6 +20,9 @@ public class Material {
 	private static List<Material> materials = new ArrayList<Material>();
 	private static int i;
 	
+	private File f = null;
+	private long lastModified;
+	
 	public Material(String n, Texture t, Color c, Shader s) {
 		name = n;
 		texture = t;
@@ -38,7 +41,8 @@ public class Material {
 				br = new BufferedReader(isr);
 				this.name = name.replaceFirst("/", "");
 			} else {
-				br = new BufferedReader(new FileReader(new File(name+".bfm")));
+				f = new File(name+".bfm"); lastModified = f.lastModified();
+				br = new BufferedReader(new FileReader(f));
 				String[] split = name.replaceAll(Pattern.quote("\\"), "\\\\").split("\\\\");
 				this.name = split[split.length - 1];
 			}
@@ -81,5 +85,39 @@ public class Material {
 
 	public static final List<Material> getMaterials() {
 		return materials;
+	}
+	
+	public static void refreshAll() {
+		for(i = 0; i < materials.size(); i++) {
+			try {
+				materials.get(i).refresh();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void refresh() throws IOException {
+		if(f==null) return;
+		File temp = new File(f.getAbsolutePath());
+		if(!temp.exists()) return;
+		
+		if(temp.lastModified() == lastModified) return;
+		f = temp;
+		lastModified = f.lastModified();
+		
+		BufferedReader br = new BufferedReader(new FileReader(f));
+		
+		// Get texture
+		texture = Texture.findTexture(br.readLine().split(" ")[1]);	
+			
+		// Get color
+		String[] c = br.readLine().split(" ")[1].split(",");
+		color = new Color(Float.parseFloat(c[0]), Float.parseFloat(c[1]), Float.parseFloat(c[2]), Float.parseFloat(c[3]));
+			
+		// Get shader
+		shader = Shader.find(br.readLine().split(" ")[1]);
+
+		br.close();
 	}
 }

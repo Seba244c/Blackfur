@@ -54,7 +54,6 @@ public class Core {
 			while(!glfwWindowShouldClose(window)) {
 				Application.input.late();
 				glfwPollEvents();
-				
 				if(!Application.isMinemiszed()) {
 					// Update base updates
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -64,7 +63,6 @@ public class Core {
 										
 					// run component methods
 					Entity.prepareEntities();
-					
 					// Rendering
 					Editor.render();
 					
@@ -74,7 +72,6 @@ public class Core {
 						Renderer.render(new Rect(400, 30, Application.getWidth()-800, Application.getHeight() - 260));
 					
 					glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
-					
 					// GUI stuff not in editor
 					GUI.prepare();
 					

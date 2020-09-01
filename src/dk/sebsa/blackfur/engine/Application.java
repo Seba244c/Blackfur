@@ -4,9 +4,12 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWWindowFocusCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 
+import dk.sebsa.blackfur.gui.GUISkin;
+import dk.sebsa.blackfur.gui.Sprite;
 import dk.sebsa.blackfur.input.Input;
 
 public class Application {
@@ -20,6 +23,7 @@ public class Application {
 	
 	public static Input input;
 	private static GLFWWindowSizeCallback sizeCallback;
+	private static GLFWWindowFocusCallback focusCallback;
 	
 	@SuppressWarnings("resource")
 	public static long init() {
@@ -66,10 +70,22 @@ public class Application {
 		sizeCallback = GLFWWindowSizeCallback.create(Application::onResize);
 		glfwSetWindowSizeCallback(window, sizeCallback);
 		
+		// Resize callback
+		focusCallback = GLFWWindowFocusCallback.create(Application::changeFocus);
+		glfwSetWindowFocusCallback(window, focusCallback);
+		
 		// Vsync
 		glfwSwapInterval(0);
 		
 		return window;
+	}
+	
+	public static void changeFocus(long window, boolean focused) {
+		if(focused) {
+			Sprite.refreshAll();
+			GUISkin.refreshAll();
+			Material.refreshAll();
+		}
 	}
 	
 	public static void onResize(long window, int w, int h) {
@@ -98,6 +114,7 @@ public class Application {
 	public static void cleanup() {
 		input.cleanup(window);
 		sizeCallback.close();
+		focusCallback.close();
 	}
 
 	public static Rect getRect() {

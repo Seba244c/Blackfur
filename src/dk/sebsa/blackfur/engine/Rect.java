@@ -38,18 +38,20 @@ public class Rect {
 		this.height = h;
 	}
 	
-	public void add(float x, float y, float w, float h) {
+	public Rect add(float x, float y, float w, float h) {
 		this.x += x;
 		this.y += y;
 		this.width += w;
 		this.height += h;
+		return this;
 	}
 	
-	public void add(Rect r) {
+	public Rect add(Rect r) {
 		this.x += r.x;
 		this.y += r.y;
 		this.width += r.width;
 		this.height += r.height;
+		return this;
 	}
 	
 	public void addPosition(float x, float y) {
